@@ -4,6 +4,7 @@ pipeline {
     tools {
         jdk 'JDK_HOME'
         maven 'MAVEN_HOME'
+        nodejs 'NODE_HOME'
     }
 
     environment {
@@ -25,13 +26,11 @@ pipeline {
             }
         }
 
-        stage('Build Frontend (Vite)') {
+        stage('Build Frontend (Next.js)') {
             steps {
                 dir("${env.FRONTEND_DIR}") {
-                    script {
-                        def nodeHome = tool name: 'NODE_HOME', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                        env.PATH = "${nodeHome}/bin:${env.PATH}"
-                    }
+                    // Next.js is configured for static export (output: 'export' in next.config.js)
+                    // API routes have been removed as authentication/database operations moved to Spring Boot backend
                     sh 'npm install'
                     sh 'npm run build'
                 }
@@ -43,7 +42,7 @@ pipeline {
                 dir("${env.FRONTEND_DIR}") {
                     sh """
                         mkdir -p frontapp_war/WEB-INF
-                        cp -r dist/* frontapp_war/
+                        cp -r out/* frontapp_war/
                         jar -cvf ../../${FRONTEND_WAR} -C frontapp_war .
                     """
                 }
