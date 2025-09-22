@@ -34,7 +34,7 @@ pipeline {
                         env.PATH = "${nodeHome}/bin:${env.PATH}"
                     }
                     sh 'npm install'
-                    sh 'npm run build'
+                    sh 'npm run export-war'
                     sh 'ls -la out/ 2>/dev/null || echo "ERROR: out/ directory not created"'
                 }
             }
@@ -99,4 +99,4 @@ pipeline {
             echo "❌ Build or deployment failed"
         }
     }
-}
+}   
