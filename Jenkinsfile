@@ -58,26 +58,71 @@ pipeline {
             }
         }
 
+        stage('Verify WAR Files') {
+            steps {
+                dir('.') {  // Workspace root
+                    sh """
+                        echo "Verifying WAR files exist..."
+                        ls -la *.war
+
+                        if [ ! -f "${BACKEND_WAR}" ]; then
+                            echo "ERROR: ${BACKEND_WAR} not found!"
+                            exit 1
+                        fi
+
+                        if [ ! -f "${FRONTEND_WAR}" ]; then
+                            echo "ERROR: ${FRONTEND_WAR} not found!"
+                            exit 1
+                        fi
+
+                        echo "✅ All WAR files found and ready for deployment"
+                    """
+                }
+            }
+        }
+
         stage('Deploy Backend to Tomcat (/springapp)') {
             steps {
-                script {
-                    sh """
-                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                          --upload-file ${BACKEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/springapp&update=true"
-                    """
+                dir('.') {  // Ensure we're in workspace root
+                    script {
+                        sh "pwd && ls -la *.war"
+                        sh """
+                            if [ -f "${BACKEND_WAR}" ]; then
+                                echo "Deploying ${BACKEND_WAR} to Tomcat..."
+                                curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
+                                  --upload-file ${BACKEND_WAR} \\
+                                  "${TOMCAT_URL}/deploy?path=/springapp&update=true"
+                            else
+                                echo "ERROR: ${BACKEND_WAR} not found!"
+                                echo "Current directory: \$(pwd)"
+                                ls -la
+                                exit 1
+                            fi
+                        """
+                    }
                 }
             }
         }
 
         stage('Deploy Frontend to Tomcat (/frontapp)') {
             steps {
-                script {
-                    sh """
-                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                          --upload-file ${FRONTEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
-                    """
+                dir('.') {  // Ensure we're in workspace root
+                    script {
+                        sh "pwd && ls -la *.war"
+                        sh """
+                            if [ -f "${FRONTEND_WAR}" ]; then
+                                echo "Deploying ${FRONTEND_WAR} to Tomcat..."
+                                curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
+                                  --upload-file ${FRONTEND_WAR} \\
+                                  "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
+                            else
+                                echo "ERROR: ${FRONTEND_WAR} not found!"
+                                echo "Current directory: \$(pwd)"
+                                ls -la
+                                exit 1
+                            fi
+                        """
+                    }
                 }
             }
         }
@@ -85,8 +130,8 @@ pipeline {
 
     post {
         success {
-            echo "✅ Backend deployed: http://13.218.221.111:9090/springapp"
-            echo "✅ Frontend deployed: http://13.218.221.111:9090/frontapp"
+            echo "✅ Backend deployed: http://54.159.15.170:9090/springapp"
+            echo "✅ Frontend deployed: http://54.159.15.170:9090/frontapp"
         }
         failure {
             echo "❌ Build or deployment failed"
