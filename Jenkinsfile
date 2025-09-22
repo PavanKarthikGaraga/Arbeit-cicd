@@ -53,7 +53,7 @@ pipeline {
             steps {
                 dir("${env.BACKEND_DIR}") {
                     sh 'mvn clean package'
-                    sh "cp target/*.war ../../${BACKEND_WAR}"
+                    sh "cp target/arbeits-backend-*.war ../../${BACKEND_WAR}"
                 }
             }
         }
