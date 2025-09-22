@@ -46,10 +46,10 @@ pipeline {
                     sh """
                         mkdir -p frontapp_war/WEB-INF
                         cp -r out/* frontapp_war/
-                        jar -cvf ../../${FRONTEND_WAR} -C frontapp_war .
+                        jar -cvf ${env.WORKSPACE}/${FRONTEND_WAR} -C frontapp_war .
                     """
                 }
-                sh 'ls -la *.war 2>/dev/null || echo "No WAR files after frontend packaging"'
+                sh 'ls -la ${WORKSPACE}/*.war 2>/dev/null || echo "No WAR files after frontend packaging"'
             }
         }
 
@@ -57,39 +57,34 @@ pipeline {
             steps {
                 dir("${env.BACKEND_DIR}") {
                     sh 'mvn clean package'
-                    sh 'ls -la target/'
-                    sh "cp target/*.war ../../${BACKEND_WAR}"
+                    sh "cp target/*.war ${env.WORKSPACE}/${BACKEND_WAR}"
                 }
-                sh 'ls -la *.war 2>/dev/null || echo "No WAR files in workspace"'
+                sh 'ls -la ${WORKSPACE}/*.war 2>/dev/null || echo "No WAR files in workspace"'
             }
         }
 
         stage('Deploy Backend to Tomcat (/springapp)') {
             steps {
-                dir('.') {
-                    script {
-                        sh "pwd && ls -la *.war"
-                        sh """
-                            curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                              --upload-file ${BACKEND_WAR} \\
-                              "${TOMCAT_URL}/deploy?path=/springapp&update=true"
-                        """
-                    }
+                dir("${env.WORKSPACE}") {
+                    sh "ls -la ${BACKEND_WAR}"
+                    sh """
+                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
+                          --upload-file ${BACKEND_WAR} \\
+                          "${TOMCAT_URL}/deploy?path=/springapp&update=true"
+                    """
                 }
             }
         }
 
         stage('Deploy Frontend to Tomcat (/frontapp)') {
             steps {
-                dir('.') {
-                    script {
-                        sh "pwd && ls -la *.war"
-                        sh """
-                            curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                              --upload-file ${FRONTEND_WAR} \\
-                              "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
-                        """
-                    }
+                dir("${env.WORKSPACE}") {
+                    sh "ls -la ${FRONTEND_WAR}"
+                    sh """
+                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
+                          --upload-file ${FRONTEND_WAR} \\
+                          "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
+                    """
                 }
             }
         }
