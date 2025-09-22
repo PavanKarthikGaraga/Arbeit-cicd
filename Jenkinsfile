@@ -35,6 +35,7 @@ pipeline {
                     }
                     sh 'npm install'
                     sh 'npm run build'
+                    sh 'ls -la out/ 2>/dev/null || echo "ERROR: out/ directory not created"'
                 }
             }
         }
@@ -48,6 +49,7 @@ pipeline {
                         jar -cvf ../../${FRONTEND_WAR} -C frontapp_war .
                     """
                 }
+                sh 'ls -la *.war 2>/dev/null || echo "No WAR files after frontend packaging"'
             }
         }
 
@@ -55,31 +57,39 @@ pipeline {
             steps {
                 dir("${env.BACKEND_DIR}") {
                     sh 'mvn clean package'
+                    sh 'ls -la target/'
                     sh "cp target/*.war ../../${BACKEND_WAR}"
                 }
+                sh 'ls -la *.war 2>/dev/null || echo "No WAR files in workspace"'
             }
         }
 
         stage('Deploy Backend to Tomcat (/springapp)') {
             steps {
-                script {
-                    sh """
-                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                          --upload-file ${BACKEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/springapp&update=true"
-                    """
+                dir('.') {
+                    script {
+                        sh "pwd && ls -la *.war"
+                        sh """
+                            curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
+                              --upload-file ${BACKEND_WAR} \\
+                              "${TOMCAT_URL}/deploy?path=/springapp&update=true"
+                        """
+                    }
                 }
             }
         }
 
         stage('Deploy Frontend to Tomcat (/frontapp)') {
             steps {
-                script {
-                    sh """
-                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                          --upload-file ${FRONTEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
-                    """
+                dir('.') {
+                    script {
+                        sh "pwd && ls -la *.war"
+                        sh """
+                            curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
+                              --upload-file ${FRONTEND_WAR} \\
+                              "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
+                        """
+                    }
                 }
             }
         }
