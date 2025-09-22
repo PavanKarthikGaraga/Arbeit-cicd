@@ -33,6 +33,7 @@ pipeline {
                     // API routes have been removed as authentication/database operations moved to Spring Boot backend
                     sh 'npm install'
                     sh 'npm run build'
+                    sh 'ls -la out/ 2>/dev/null || echo "ERROR: out/ directory not found after build"'
                 }
             }
         }
@@ -41,9 +42,19 @@ pipeline {
             steps {
                 dir("${env.FRONTEND_DIR}") {
                     sh """
-                        mkdir -p frontapp_war/WEB-INF
-                        cp -r out/* frontapp_war/
-                        jar -cvf ../../${FRONTEND_WAR} -C frontapp_war .
+                        echo "=== FRONTEND PACKAGING ==="
+                        pwd
+                        ls -la out/ 2>/dev/null || echo "ERROR: out/ directory not found"
+                        if [ -d "out/" ]; then
+                            mkdir -p frontapp_war/WEB-INF
+                            cp -r out/* frontapp_war/ 2>/dev/null || echo "Warning: No files to copy from out/"
+                            echo "Creating WAR file..."
+                            jar -cvf ../../${FRONTEND_WAR} -C frontapp_war . 2>/dev/null
+                            echo "WAR file creation completed"
+                        else
+                            echo "ERROR: Cannot create WAR - out/ directory missing"
+                            exit 1
+                        fi
                     """
                 }
             }
@@ -52,8 +63,24 @@ pipeline {
         stage('Build Backend (Spring Boot WAR)') {
             steps {
                 dir("${env.BACKEND_DIR}") {
-                    sh 'mvn clean package'
-                    sh "cp target/arbeits-backend-*.war ../../${BACKEND_WAR}"
+                    sh """
+                        echo "=== BACKEND BUILD ==="
+                        pwd
+                        mvn clean package
+                        echo "Build completed, checking for WAR files..."
+                        ls -la target/ 2>/dev/null || echo "ERROR: target/ directory not found"
+                        WAR_FILE=\$(ls target/arbeits-backend-*.war 2>/dev/null | head -1)
+                        if [ -n "\$WAR_FILE" ]; then
+                            echo "Found WAR file: \$WAR_FILE"
+                            cp "\$WAR_FILE" "../../${BACKEND_WAR}"
+                            echo "WAR file copied to ../../${BACKEND_WAR}"
+                        else
+                            echo "ERROR: No WAR file found in target directory"
+                            echo "Contents of target directory:"
+                            ls -la target/ 2>/dev/null || echo "target directory does not exist"
+                            exit 1
+                        fi
+                    """
                 }
             }
         }
@@ -62,20 +89,32 @@ pipeline {
             steps {
                 dir('.') {  // Workspace root
                     sh """
-                        echo "Verifying WAR files exist..."
-                        ls -la *.war
+                        echo "=== WAR FILE VERIFICATION ==="
+                        pwd
+                        echo "Listing all files in workspace root:"
+                        ls -la
+                        echo ""
+                        echo "Checking for WAR files specifically:"
+                        ls -la *.war 2>/dev/null || echo "No .war files found"
 
                         if [ ! -f "${BACKEND_WAR}" ]; then
-                            echo "ERROR: ${BACKEND_WAR} not found!"
+                            echo "❌ ERROR: ${BACKEND_WAR} not found!"
+                            echo "Expected backend WAR file: ${BACKEND_WAR}"
                             exit 1
+                        else
+                            echo "✅ ${BACKEND_WAR} found (\$(stat -c%s "${BACKEND_WAR}") bytes)"
                         fi
 
                         if [ ! -f "${FRONTEND_WAR}" ]; then
-                            echo "ERROR: ${FRONTEND_WAR} not found!"
+                            echo "❌ ERROR: ${FRONTEND_WAR} not found!"
+                            echo "Expected frontend WAR file: ${FRONTEND_WAR}"
                             exit 1
+                        else
+                            echo "✅ ${FRONTEND_WAR} found (\$(stat -c%s "${FRONTEND_WAR}") bytes)"
                         fi
 
-                        echo "✅ All WAR files found and ready for deployment"
+                        echo ""
+                        echo "🎉 All WAR files found and ready for deployment!"
                     """
                 }
             }
