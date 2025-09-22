@@ -1,40 +1,22 @@
-import {MongoClient} from 'mongodb';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-const URL = process.env.MONGO_URL;
-
-let client=null;
-
-if(!URL){
-    console.log('Environment variables MONGO_URL or MONGO_DB are not set');
-    process.exit(1);
-}
+// Database configuration - migrated to Spring Boot backend with MySQL
+// This file is kept for compatibility but no longer connects to MongoDB
+// All database operations are now handled by the Spring Boot backend
 
 export async function connect() {
-    try {
-        if (!client) {
-            client = new MongoClient(URL);
-            await client.connect();
-            console.log("Connected to MongoDB");
-        }
-        return client.db();
-    } catch(err) {
-        console.log(err);
-        throw err;
-    }
+    // Return a dummy object for compatibility
+    // All database operations are now handled by Spring Boot backend
+    return {
+        collection: () => ({
+            find: () => ({ toArray: () => Promise.resolve([]) }),
+            findOne: () => Promise.resolve(null),
+            insertOne: () => Promise.resolve({ insertedId: null }),
+            updateOne: () => Promise.resolve({ modifiedCount: 0 }),
+            deleteOne: () => Promise.resolve({ deletedCount: 0 })
+        })
+    };
 }
 
 export async function disconnect() {
-    try {
-        if (client) {
-            await client.close();
-            client = null;
-        }
-    } catch(err) {    
-        console.log(err);
-        throw err;
-    }
+    // No-op - database connection is managed by Spring Boot backend
 }
 
