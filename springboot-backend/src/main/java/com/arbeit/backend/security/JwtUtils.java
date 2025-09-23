@@ -17,22 +17,23 @@ public class JwtUtils {
     @Value("${app.jwt.access-token-secret}")
     private String accessTokenSecret;
 
-    @Value("${app.jwt.refresh-token-secret}")
-    private String refreshTokenSecret;
+    // Refresh token disabled
+    // @Value("${app.jwt.refresh-token-secret}")
+    // private String refreshTokenSecret;
 
     @Value("${app.jwt.access-token-expiration}")
     private long accessTokenExpiration;
 
-    @Value("${app.jwt.refresh-token-expiration}")
-    private long refreshTokenExpiration;
+    // @Value("${app.jwt.refresh-token-expiration}")
+    // private long refreshTokenExpiration;
 
     private SecretKey getAccessTokenKey() {
         return Keys.hmacShaKeyFor(accessTokenSecret.getBytes());
     }
 
-    private SecretKey getRefreshTokenKey() {
-        return Keys.hmacShaKeyFor(refreshTokenSecret.getBytes());
-    }
+    // private SecretKey getRefreshTokenKey() {
+    //     return Keys.hmacShaKeyFor(refreshTokenSecret.getBytes());
+    // }
 
     public String generateAccessToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
@@ -40,17 +41,17 @@ public class JwtUtils {
         return createToken(claims, username, accessTokenExpiration, getAccessTokenKey());
     }
 
-    public String generateRefreshToken(String username, String role) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
-        return createToken(claims, username, refreshTokenExpiration, getRefreshTokenKey());
-    }
+    // public String generateRefreshToken(String username, String role) {
+    //     Map<String, Object> claims = new HashMap<>();
+    //     claims.put("role", role);
+    //     return createToken(claims, username, refreshTokenExpiration, getRefreshTokenKey());
+    // }
 
-    public String generateAccessTokenFromRefreshToken(String refreshToken) {
-        final String username = extractUsernameFromRefreshToken(refreshToken);
-        final String role = extractRoleFromRefreshToken(refreshToken);
-        return generateAccessToken(username, role);
-    }
+    // public String generateAccessTokenFromRefreshToken(String refreshToken) {
+    //     final String username = extractUsernameFromRefreshToken(refreshToken);
+    //     final String role = extractRoleFromRefreshToken(refreshToken);
+    //     return generateAccessToken(username, role);
+    // }
 
     private String createToken(Map<String, Object> claims, String subject, long expirationTime, SecretKey key) {
         return Jwts.builder()
@@ -66,17 +67,17 @@ public class JwtUtils {
         return extractClaim(token, Claims::getSubject, getAccessTokenKey());
     }
 
-    public String extractUsernameFromRefreshToken(String token) {
-        return extractClaim(token, Claims::getSubject, getRefreshTokenKey());
-    }
+    // public String extractUsernameFromRefreshToken(String token) {
+    //     return extractClaim(token, Claims::getSubject, getRefreshTokenKey());
+    // }
 
     public String extractRole(String token) {
         return extractClaim(token, claims -> claims.get("role", String.class), getAccessTokenKey());
     }
 
-    public String extractRoleFromRefreshToken(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class), getRefreshTokenKey());
-    }
+    // public String extractRoleFromRefreshToken(String token) {
+    //     return extractClaim(token, claims -> claims.get("role", String.class), getRefreshTokenKey());
+    // }
 
     public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration, getAccessTokenKey());
@@ -111,22 +112,22 @@ public class JwtUtils {
         }
     }
 
-    public Boolean validateRefreshToken(String token) {
-        try {
-            extractAllClaims(token, getRefreshTokenKey());
-            return !isRefreshTokenExpired(token);
-        } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
-            return false;
-        }
-    }
+    // public Boolean validateRefreshToken(String token) {
+    //     try {
+    //         extractAllClaims(token, getRefreshTokenKey());
+    //         return !isRefreshTokenExpired(token);
+    //     } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+    //         return false;
+    //     }
+    // }
 
-    private Boolean isRefreshTokenExpired(String token) {
-        try {
-            return extractClaim(token, Claims::getExpiration, getRefreshTokenKey()).before(new Date());
-        } catch (ExpiredJwtException e) {
-            return true;
-        }
-    }
+    // private Boolean isRefreshTokenExpired(String token) {
+    //     try {
+    //         return extractClaim(token, Claims::getExpiration, getRefreshTokenKey()).before(new Date());
+    //     } catch (ExpiredJwtException e) {
+    //         return true;
+    //     }
+    // }
 
     public String getUsernameFromToken(String token) {
         return extractUsername(token);

@@ -8,97 +8,20 @@ export function AuthProvider({children}) {
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
-    // Initial auth check
+    // Do not auto-fetch on load; loading state should end immediately
     useEffect(() => {
-        const checkAuth = async () => {
-            try {
-                // Check if we have valid tokens by trying to refresh
-                const response = await refreshToken();
-                if (response.ok) {
-                    // First, try to get user data from regular profile endpoint
-                    let profileResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/profile`, {
-                        credentials: 'include'
-                    });
-
-                    let profileData = null;
-                    let userRole = null;
-
-                    if (profileResponse.ok) {
-                        profileData = await profileResponse.json();
-                        userRole = profileData.role;
-                    } else {
-                        // If regular profile fails, try business profile
-                        const businessProfileResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/business/profile`, {
-                            credentials: 'include'
-                        });
-                        if (businessProfileResponse.ok) {
-                            profileData = await businessProfileResponse.json();
-                            userRole = 'business'; // Business profile doesn't return role, so we set it
-                        }
-                    }
-
-                    if (profileData && userRole) {
-                        // Extract user info from profile data
-                        if (userRole === 'business') {
-                            setUser({
-                                email: profileData.companyEmail,
-                                role: userRole,
-                                id: profileData.bid,
-                                companyName: profileData.companyName,
-                                name: profileData.name
-                            });
-                        } else {
-                            setUser({
-                                email: profileData.email,
-                                role: userRole,
-                                id: profileData.id,
-                                firstName: profileData.firstName,
-                                lastName: profileData.lastName
-                            });
-                        }
-                    }
-                }
-            } catch (error) {
-                console.error('Auth check failed:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
-        checkAuth();
+        setIsLoading(false);
     }, []);
 
-    // Handle token refresh
+    // No periodic refresh; rely on single 30-minute token validity
     useEffect(() => {
-        let intervalId;
-
-        if (user) {
-            intervalId = setInterval(async () => {
-                try {
-                    const response = await refreshToken();
-                    if (!response.ok) {
-                        clearInterval(intervalId);
-                        setUser(null);
-                        router.replace('/');
-                    }
-                    // If refresh is successful, we don't need to update user state
-                    // as the cookies are automatically updated by the server
-                } catch (error) {
-                    console.error('Token refresh failed:', error);
-                    clearInterval(intervalId);
-                    setUser(null);
-                    router.replace('/');
-                }
-            }, 4 * 60 * 1000); // Refresh every 4 minutes (tokens expire in 5 minutes)
-        }
-
-        return () => {
-            if (intervalId) clearInterval(intervalId);
-        };
-    }, [user, router]);
+        return () => {};
+    }, [user]);
 
     const login = async(email, password) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/login`, {
+            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://18.207.128.131:9090/api';
+            const response = await fetch(`${backendUrl}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: email, password: password }),
@@ -177,40 +100,7 @@ export function AuthProvider({children}) {
         }
     }
 
-    const refreshToken = async () => {
-        try {
-            // Try regular user refresh first
-            let response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/refresh`, {
-                method: "GET",
-                headers: { "Content-Type": "application/json" },
-                credentials: 'include'
-            });
-
-            // If regular refresh fails, try business refresh
-            if (!response.ok) {
-                response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/business/refresh`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: 'include'
-                });
-            }
-
-            if (!response.ok) {
-                return new Response(JSON.stringify({ error: 'Token refresh failed' }), {
-                    status: response.status,
-                    headers: { 'Content-Type': 'application/json' }
-                });
-            }
-
-            return response;
-        } catch (error) {
-            // Return a proper JSON response even for network errors
-            return new Response(JSON.stringify({ error: 'Network error during refresh' }), {
-                status: 500,
-                headers: { 'Content-Type': 'application/json' }
-            });
-        }
-    };
+    // Removed refreshToken flow entirely
 
     const loginBusiness = async(email, password) => {
         try {

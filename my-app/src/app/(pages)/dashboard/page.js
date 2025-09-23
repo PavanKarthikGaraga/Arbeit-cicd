@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { FaSearch, FaUser, FaTimes } from 'react-icons/fa';
 import './page.css';
 
@@ -218,7 +219,7 @@ export default function Dashboard() {
                   <div className="job-card-header">
                     <div className="company-logo">
                       {job.logo ? (
-                        <img src={job.logo} alt={`${job.companyName || job.company} logo`} />
+                        <Image src={job.logo} alt={`${job.companyName || job.company} logo`} width={50} height={50} unoptimized />
                       ) : (
                         <span>{(job.companyName || job.company || 'C')[0]}</span>
                       )}

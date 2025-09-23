@@ -24,11 +24,13 @@ public class ProfileService {
 
     // User Profile Operations
     public Optional<User> getUserProfile(String email) {
-        return userRepository.findByEmail(email);
+        String normalizedEmail = email != null ? email.trim().toLowerCase() : null;
+        return userRepository.findByEmailIgnoreCase(normalizedEmail);
     }
 
     public Optional<User> updateUserProfile(String email, UserProfileDTO profileDTO) {
-        Optional<User> userOpt = userRepository.findByEmail(email);
+        String normalizedEmail = email != null ? email.trim().toLowerCase() : null;
+        Optional<User> userOpt = userRepository.findByEmailIgnoreCase(normalizedEmail);
         if (userOpt.isEmpty()) {
             return Optional.empty();
         }
@@ -59,11 +61,13 @@ public class ProfileService {
 
     // Company Profile Operations
     public Optional<Company> getCompanyProfile(String companyEmail) {
-        return companyRepository.findByCompanyEmail(companyEmail);
+        String normalizedEmail = companyEmail != null ? companyEmail.trim().toLowerCase() : null;
+        return companyRepository.findByCompanyEmailIgnoreCase(normalizedEmail);
     }
 
     public Optional<Company> updateCompanyProfile(String companyEmail, CompanyProfileDTO profileDTO) {
-        Optional<Company> companyOpt = companyRepository.findByCompanyEmail(companyEmail);
+        String normalizedEmail = companyEmail != null ? companyEmail.trim().toLowerCase() : null;
+        Optional<Company> companyOpt = companyRepository.findByCompanyEmailIgnoreCase(normalizedEmail);
         if (companyOpt.isEmpty()) {
             return Optional.empty();
         }

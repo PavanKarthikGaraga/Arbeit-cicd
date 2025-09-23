@@ -28,21 +28,13 @@ public class BusinessAuthController {
         try {
             LoginResponse loginResponse = businessAuthService.login(request);
 
-            // Set JWT tokens as HTTP-only cookies
+            // Set JWT token as HTTP-only cookie (single token, 30 min)
             Cookie accessTokenCookie = new Cookie("accessToken", loginResponse.getAccessToken());
             accessTokenCookie.setHttpOnly(true);
             accessTokenCookie.setSecure(false); // Set to true in production with HTTPS
             accessTokenCookie.setPath("/");
-            accessTokenCookie.setMaxAge(300); // 5 minutes
-
-            Cookie refreshTokenCookie = new Cookie("refreshToken", loginResponse.getRefreshToken());
-            refreshTokenCookie.setHttpOnly(true);
-            refreshTokenCookie.setSecure(false); // Set to true in production with HTTPS
-            refreshTokenCookie.setPath("/");
-            refreshTokenCookie.setMaxAge(900); // 15 minutes
-
+            accessTokenCookie.setMaxAge(1800); // 30 minutes
             response.addCookie(accessTokenCookie);
-            response.addCookie(refreshTokenCookie);
 
             // Don't send tokens in response body for security
             AuthResponse authResponse = new AuthResponse(loginResponse.getMessage(),
@@ -72,33 +64,5 @@ public class BusinessAuthController {
         }
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken,
-                                         HttpServletResponse response) {
-        try {
-            if (refreshToken == null) {
-                return ResponseEntity.badRequest()
-                        .body(new AuthResponse("Refresh token not found"));
-            }
-
-            String newAccessToken = businessAuthService.refreshToken(refreshToken);
-
-            // Set new access token cookie
-            Cookie accessTokenCookie = new Cookie("accessToken", newAccessToken);
-            accessTokenCookie.setHttpOnly(true);
-            accessTokenCookie.setSecure(false); // Set to true in production with HTTPS
-            accessTokenCookie.setPath("/");
-            accessTokenCookie.setMaxAge(300); // 5 minutes
-
-            response.addCookie(accessTokenCookie);
-
-            return ResponseEntity.ok(new AuthResponse("Business token refreshed successfully"));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest()
-                    .body(new AuthResponse("Token refresh failed: " + e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AuthResponse("Internal server error"));
-        }
-    }
+    // Refresh endpoint removed
 }

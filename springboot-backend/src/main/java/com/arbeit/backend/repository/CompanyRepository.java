@@ -10,10 +10,12 @@ import java.util.Optional;
 public interface CompanyRepository extends JpaRepository<Company, Long> {
 
     Optional<Company> findByCompanyEmail(String companyEmail);
+    Optional<Company> findByCompanyEmailIgnoreCase(String companyEmail);
 
     Optional<Company> findByBid(String bid);
 
     boolean existsByCompanyEmail(String companyEmail);
+    boolean existsByCompanyEmailIgnoreCase(String companyEmail);
 
     boolean existsByBid(String bid);
 }

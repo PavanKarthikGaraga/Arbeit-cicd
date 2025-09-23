@@ -77,7 +77,8 @@ export default function MentorshipPage() {
       setCompletedTasks(JSON.parse(storedTasks));
     }
     setIsLoading(false);
-  }, [router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // This effect should only run once on mount
 
   useEffect(() => {
     if (roadmap) {

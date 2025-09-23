@@ -191,7 +191,7 @@ const ProfilePage = () => {
       return;
     }
 
-    const passwordPromise = fetch('/api/auth/change-password', {
+    const passwordPromise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/change-password`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

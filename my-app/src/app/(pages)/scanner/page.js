@@ -33,6 +33,14 @@ if (typeof window !== 'undefined') {
   pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js`;
 }
 
+const loadingMessages = [
+  'Scanning resume structure...',
+  'Analyzing keywords and phrases...',
+  'Evaluating ATS compatibility...',
+  'Calculating overall score...',
+  'Generating detailed feedback...'
+];
+
 export default function ScannerPage() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
@@ -40,14 +48,6 @@ export default function ScannerPage() {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loadingStage, setLoadingStage] = useState('');
-
-  const loadingMessages = [
-    'Scanning resume structure...',
-    'Analyzing keywords and phrases...',
-    'Evaluating ATS compatibility...',
-    'Calculating overall score...',
-    'Generating detailed feedback...'
-  ];
 
   useEffect(() => {
     let interval;
@@ -63,7 +63,7 @@ export default function ScannerPage() {
     }
 
     return () => clearInterval(interval);
-  }, [loading]);
+  }, [loading]); // loadingMessages is a constant, no need to include
 
   const handleFileUpload = async (e) => {
     const uploadedFile = e.target.files[0];
@@ -188,7 +188,7 @@ export default function ScannerPage() {
             Upload Your Resume
           </h2>
           <p className="text-gray-600">
-            Let's analyze your resume against ATS systems
+            Let&apos;s analyze your resume against ATS systems
           </p>
         </div>
 

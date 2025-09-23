@@ -5,6 +5,7 @@ import com.arbeit.backend.dto.AuthResponse;
 import com.arbeit.backend.dto.LoginResponse;
 import com.arbeit.backend.dto.UserRegistrationRequest;
 import com.arbeit.backend.service.AuthService;
+import com.arbeit.backend.security.JwtUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -18,31 +19,29 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+    private final JwtUtils jwtUtils;
 
-    public AuthController(AuthService authService) {
+    public AuthController(AuthService authService, JwtUtils jwtUtils) {
         this.authService = authService;
+        this.jwtUtils = jwtUtils;
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody AuthRequest request, HttpServletResponse response) {
         try {
+            // Normalize email to avoid case or whitespace mismatches
+            if (request.getEmail() != null) {
+                request.setEmail(request.getEmail().trim().toLowerCase());
+            }
             LoginResponse loginResponse = authService.login(request);
 
-            // Set JWT tokens as HTTP-only cookies
+            // Set JWT token as HTTP-only cookie (single token, 30 min)
             Cookie accessTokenCookie = new Cookie("accessToken", loginResponse.getAccessToken());
             accessTokenCookie.setHttpOnly(true);
             accessTokenCookie.setSecure(false); // Set to true in production with HTTPS
             accessTokenCookie.setPath("/");
-            accessTokenCookie.setMaxAge(300); // 5 minutes
-
-            Cookie refreshTokenCookie = new Cookie("refreshToken", loginResponse.getRefreshToken());
-            refreshTokenCookie.setHttpOnly(true);
-            refreshTokenCookie.setSecure(false); // Set to true in production with HTTPS
-            refreshTokenCookie.setPath("/");
-            refreshTokenCookie.setMaxAge(900); // 15 minutes
-
+            accessTokenCookie.setMaxAge(1800); // 30 minutes
             response.addCookie(accessTokenCookie);
-            response.addCookie(refreshTokenCookie);
 
             // Don't send tokens in response body for security
             AuthResponse authResponse = new AuthResponse(loginResponse.getMessage(),
@@ -61,6 +60,9 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody UserRegistrationRequest request) {
         try {
+            if (request.getEmail() != null) {
+                request.setEmail(request.getEmail().trim().toLowerCase());
+            }
             AuthResponse authResponse = authService.register(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(authResponse);
         } catch (RuntimeException e) {
@@ -72,35 +74,7 @@ public class AuthController {
         }
     }
 
-    @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@CookieValue(value = "refreshToken", required = false) String refreshToken,
-                                         HttpServletResponse response) {
-        try {
-            if (refreshToken == null) {
-                return ResponseEntity.badRequest()
-                        .body(new AuthResponse("Refresh token not found"));
-            }
-
-            String newAccessToken = authService.refreshToken(refreshToken);
-
-            // Set new access token cookie
-            Cookie accessTokenCookie = new Cookie("accessToken", newAccessToken);
-            accessTokenCookie.setHttpOnly(true);
-            accessTokenCookie.setSecure(false); // Set to true in production with HTTPS
-            accessTokenCookie.setPath("/");
-            accessTokenCookie.setMaxAge(300); // 5 minutes
-
-            response.addCookie(accessTokenCookie);
-
-            return ResponseEntity.ok(new AuthResponse("Token refreshed successfully"));
-        } catch (RuntimeException e) {
-            return ResponseEntity.badRequest()
-                    .body(new AuthResponse("Token refresh failed: " + e.getMessage()));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new AuthResponse("Internal server error"));
-        }
-    }
+    // Refresh endpoint removed
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletResponse response) {
@@ -112,19 +86,59 @@ public class AuthController {
             accessTokenCookie.setPath("/");
             accessTokenCookie.setMaxAge(0);
 
-            Cookie refreshTokenCookie = new Cookie("refreshToken", "");
-            refreshTokenCookie.setHttpOnly(true);
-            refreshTokenCookie.setSecure(false);
-            refreshTokenCookie.setPath("/");
-            refreshTokenCookie.setMaxAge(0);
-
             response.addCookie(accessTokenCookie);
-            response.addCookie(refreshTokenCookie);
+            // No refresh cookie to clear
 
             return ResponseEntity.ok(new AuthResponse("Logged out successfully"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new AuthResponse("Logout failed"));
         }
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@CookieValue(value = "accessToken", required = false) String accessToken,
+                                            @RequestBody java.util.Map<String, String> body) {
+        try {
+            if (accessToken == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("Unauthorized"));
+            }
+
+            String currentPassword = body.get("currentPassword");
+            String newPassword = body.get("newPassword");
+            if (currentPassword == null || newPassword == null) {
+                return ResponseEntity.badRequest().body(new AuthResponse("Invalid request"));
+            }
+
+            String username = jwtUtils.getUsernameFromToken(accessToken);
+            authService.changePassword(username, currentPassword, newPassword);
+            return ResponseEntity.ok(new AuthResponse("Password updated"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new AuthResponse(e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new AuthResponse("Failed to update password"));
+        }
+    }
+
+    @PostMapping("/verify-email")
+    public ResponseEntity<?> sendVerification(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        if (email == null || email.isBlank()) {
+            return ResponseEntity.badRequest().body(new AuthResponse("Email is required"));
+        }
+        // Mock success; integrate real email later
+        return ResponseEntity.ok(new AuthResponse("Verification code sent"));
+    }
+
+    @PutMapping("/verify-email")
+    public ResponseEntity<?> verifyCode(@RequestBody java.util.Map<String, String> body) {
+        String email = body.get("email");
+        String code = body.get("code");
+        if (email == null || email.isBlank() || code == null || code.isBlank()) {
+            return ResponseEntity.badRequest().body(new AuthResponse("Invalid request"));
+        }
+        // Mock acceptance of any code
+        return ResponseEntity.ok(new AuthResponse("Email verified"));
     }
 }
