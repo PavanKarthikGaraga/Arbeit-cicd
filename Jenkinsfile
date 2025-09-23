@@ -15,7 +15,7 @@ pipeline {
         TOMCAT_USER = 'admin'
         TOMCAT_PASS = 'admin'
 
-        BACKEND_WAR = 'springapp.war'
+        BACKEND_WAR = 'arbeits-backend.war'
         FRONTEND_WAR = 'frontapp.war'
     }
 
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 dir("${env.BACKEND_DIR}") {
                     sh 'mvn clean package'
-                    sh "cp target/*.war ${env.WORKSPACE}/${BACKEND_WAR}"
+                    sh "cp target/arbeits-backend-*.war ${env.WORKSPACE}/${BACKEND_WAR}"
                 }
                 sh 'ls -la ${WORKSPACE}/*.war 2>/dev/null || echo "No WAR files in workspace"'
             }
