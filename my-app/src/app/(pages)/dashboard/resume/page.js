@@ -1,5 +1,6 @@
 'use client';
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import './page.css';
 
 const GenerateResume = () => {
@@ -146,7 +147,7 @@ const GenerateResume = () => {
                   onClick={() => setSelectedTemplate(template.id)}
                 >
                   <div className="template-preview">
-                    <img src={`/templates/${template.id}.png`} alt={template.name} />
+                    <Image src={`/templates/${template.id}.png`} alt={template.name} width={200} height={280} unoptimized />
                   </div>
                   <div className="template-info">
                     <h4>{template.name}</h4>

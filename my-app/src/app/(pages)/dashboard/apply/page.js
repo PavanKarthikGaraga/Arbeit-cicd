@@ -1,6 +1,7 @@
 'use client';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 import './apply.css';
 
 function ApplyForm() {
@@ -11,13 +12,7 @@ function ApplyForm() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (jobId) {
-      fetchJobDetails();
-    }
-  }, [jobId]);
-
-  const fetchJobDetails = async () => {
+  const fetchJobDetails = useCallback(async () => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/jobs`, {
         method: 'POST',
@@ -37,7 +32,13 @@ function ApplyForm() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [jobId]);
+
+  useEffect(() => {
+    if (jobId) {
+      fetchJobDetails();
+    }
+  }, [jobId, fetchJobDetails]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,7 +83,7 @@ function ApplyForm() {
         <div className="job-overview">
           <div className="company-logo">
             {job.logo ? (
-              <img src={job.logo} alt={`${job.company || 'Company'} logo`} />
+              <Image src={job.logo} alt={`${job.company || 'Company'} logo`} width={50} height={50} unoptimized />
             ) : (
               <span>{(job.company || 'C')[0]}</span>
             )}

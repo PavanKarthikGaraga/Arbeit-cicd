@@ -323,7 +323,7 @@ export default function AuthPage() {
             <p className="auth-footer">
               {isLogin ? (
                 <>
-                  Don't have an account?{' '}
+                  Don&apos;t have an account?{' '}
                   <button 
                     className="text-btn"
                     onClick={() => setIsLogin(false)}

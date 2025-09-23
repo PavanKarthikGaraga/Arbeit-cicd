@@ -761,7 +761,7 @@ export default function Home() {
                       <p className="text-gray-600">{testimonial.role}</p>
                     </div>
                   </div>
-                  <blockquote className="text-gray-600 italic">"{testimonial.quote}"</blockquote>
+                  <blockquote className="text-gray-600 italic">&ldquo;{testimonial.quote}&rdquo;</blockquote>
                 </div>
               </motion.div>
             ))}

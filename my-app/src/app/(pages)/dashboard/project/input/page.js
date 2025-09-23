@@ -67,7 +67,7 @@ export default function ProjectInputPage() {
               <p>AI Powered</p>
             </button>
             <h1>Project Planner</h1>
-            <p>Let's break down your project into manageable phases</p>
+            <p>Let&apos;s break down your project into manageable phases</p>
           </div>
 
           {error && (

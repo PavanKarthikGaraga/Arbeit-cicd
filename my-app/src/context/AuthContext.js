@@ -20,7 +20,7 @@ export function AuthProvider({children}) {
 
     const login = async(email, password) => {
         try {
-            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+            const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://18.207.128.131:9090/api';
             const response = await fetch(`${backendUrl}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

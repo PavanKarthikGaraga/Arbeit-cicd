@@ -134,11 +134,11 @@ export default function MentorshipInputPage() {
               <p>AI Powered</p>
             </button>
             <h1>Career Compass</h1>
-            <p>Let's create your personalized career roadmap with AI-powered guidance</p>
+            <p>Let&apos;s create your personalized career roadmap with AI-powered guidance</p>
           </div>
 
           <div className="form-group">
-            <label htmlFor="dreamRole">What's your dream role?</label>
+            <label htmlFor="dreamRole">What&apos;s your dream role?</label>
             <input
               type="text"
               id="dreamRole"

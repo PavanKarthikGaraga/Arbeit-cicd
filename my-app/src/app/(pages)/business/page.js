@@ -961,7 +961,7 @@ export default function BusinessDashboard() {
                 </div>
                 {jobs.length === 0 ? (
                   <div className="no-jobs-message">
-                    <p>No jobs found. Click the "Post New Job" button to create your first job posting.</p>
+                    <p>No jobs found. Click the &quot;Post New Job&quot; button to create your first job posting.</p>
                   </div>
                 ) : (
                   <table>
