@@ -1,7 +1,4 @@
 package com.arbeit.backend.model;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

@@ -27,7 +27,8 @@ public class BusinessAuthService {
     }
 
     public LoginResponse login(AuthRequest request) {
-        Optional<Company> companyOptional = companyRepository.findByCompanyEmail(request.getEmail());
+        String normalizedEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : null;
+        Optional<Company> companyOptional = companyRepository.findByCompanyEmailIgnoreCase(normalizedEmail);
 
         if (companyOptional.isEmpty()) {
             throw new RuntimeException("Company email does not exist");
@@ -39,21 +40,21 @@ public class BusinessAuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        // Generate tokens
+        // Generate single access token (30 min)
         String accessToken = jwtUtils.generateAccessToken(company.getCompanyEmail(), company.getRole());
-        String refreshToken = jwtUtils.generateRefreshToken(company.getCompanyEmail(), company.getRole());
 
-        return new LoginResponse("Business successfully logged in", company.getBid(), company.getCompanyEmail(), company.getRole(), accessToken, refreshToken);
+        return new LoginResponse("Business successfully logged in", company.getBid(), company.getCompanyEmail(), company.getRole(), accessToken, null);
     }
 
     public AuthResponse register(BusinessRegistrationRequest request) {
-        if (companyRepository.existsByCompanyEmail(request.getCompanyEmail())) {
+        String normalizedCompanyEmail = request.getCompanyEmail() != null ? request.getCompanyEmail().trim().toLowerCase() : null;
+        if (companyRepository.existsByCompanyEmailIgnoreCase(normalizedCompanyEmail)) {
             throw new RuntimeException("Company email already exists");
         }
 
         Company company = new Company();
         company.setName(request.getName());
-        company.setEmail(request.getEmail());
+        company.setEmail(request.getEmail() != null ? request.getEmail().trim().toLowerCase() : null);
         company.setCompanyName(request.getCompanyName());
         company.setAddress(request.getAddress());
         company.setCity(request.getCity());
@@ -62,7 +63,7 @@ public class BusinessAuthService {
         company.setZipCode(request.getZipCode());
         company.setPhone(request.getPhone());
         company.setWebsite(request.getWebsite());
-        company.setCompanyEmail(request.getCompanyEmail());
+        company.setCompanyEmail(normalizedCompanyEmail);
         company.setPassword(passwordEncoder.encode(request.getPassword()));
         company.setRole("business");
         company.setVerified(true);
@@ -77,16 +78,7 @@ public class BusinessAuthService {
         return new AuthResponse("Business registered successfully", savedCompany.getBid(), savedCompany.getCompanyEmail(), savedCompany.getRole());
     }
 
-    public String refreshToken(String refreshToken) {
-        if (!jwtUtils.validateRefreshToken(refreshToken)) {
-            throw new RuntimeException("Invalid refresh token");
-        }
-
-        // Generate new access token from refresh token
-        String newAccessToken = jwtUtils.generateAccessTokenFromRefreshToken(refreshToken);
-
-        return newAccessToken;
-    }
+    // Refresh disabled
 
     private String generateUniqueBid() {
         String bid;

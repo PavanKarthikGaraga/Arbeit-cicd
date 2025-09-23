@@ -7,11 +7,15 @@ import com.arbeit.backend.service.FileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+// import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Base64;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+
+// import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/applications")
@@ -71,6 +75,34 @@ public class ApplicationController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Failed to update application status"));
+        }
+    }
+
+    @GetMapping("/{id}/resume")
+    public ResponseEntity<?> downloadResume(@PathVariable("id") Long applicationId) {
+        try {
+            Optional<Application> applicationOpt = applicationService.getApplicationById(applicationId);
+            if (applicationOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "Application not found"));
+            }
+
+            Application application = applicationOpt.get();
+            String fileName = application.getResumeFileName();
+            if (fileName == null || fileName.isBlank()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Map.of("error", "No resume uploaded for this application"));
+            }
+
+            byte[] data = fileService.downloadResumeFromFileSystem(fileName);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.set(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=" + fileName);
+            return new ResponseEntity<>(data, headers, HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "Failed to download resume"));
         }
     }
 }

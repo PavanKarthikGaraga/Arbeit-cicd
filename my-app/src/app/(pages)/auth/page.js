@@ -46,7 +46,7 @@ export default function AuthPage() {
         return false;
       }
 
-      const response = await fetch('/api/auth/verify-email', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/verify-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
@@ -68,7 +68,7 @@ export default function AuthPage() {
 
   const verifyCode = async (email, code) => {
     try {
-      const response = await fetch('/api/auth/verify-email', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/verify-email`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, code }),

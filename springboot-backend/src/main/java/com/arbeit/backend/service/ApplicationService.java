@@ -14,7 +14,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,6 +104,10 @@ public class ApplicationService {
         }
 
         return applicationRepository.save(application);
+    }
+
+    public Optional<Application> getApplicationById(Long applicationId) {
+        return applicationRepository.findById(applicationId);
     }
 
     public List<Application> getApplicationsByJob(String jobId) {

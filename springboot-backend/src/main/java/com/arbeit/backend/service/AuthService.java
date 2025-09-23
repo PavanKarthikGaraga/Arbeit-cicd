@@ -27,7 +27,8 @@ public class AuthService {
     }
 
     public LoginResponse login(AuthRequest request) {
-        Optional<User> userOptional = userRepository.findByEmail(request.getEmail());
+        String normalizedEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : null;
+        Optional<User> userOptional = userRepository.findByEmailIgnoreCase(normalizedEmail);
 
         if (userOptional.isEmpty()) {
             throw new RuntimeException("Email does not exist");
@@ -39,20 +40,20 @@ public class AuthService {
             throw new RuntimeException("Invalid password");
         }
 
-        // Generate tokens
+        // Generate single access token (30 min)
         String accessToken = jwtUtils.generateAccessToken(user.getEmail(), user.getRole());
-        String refreshToken = jwtUtils.generateRefreshToken(user.getEmail(), user.getRole());
 
-        return new LoginResponse("User successfully logged in", user.getUserId(), user.getEmail(), user.getRole(), accessToken, refreshToken);
+        return new LoginResponse("User successfully logged in", user.getUserId(), user.getEmail(), user.getRole(), accessToken, null);
     }
 
     public AuthResponse register(UserRegistrationRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        String normalizedEmail = request.getEmail() != null ? request.getEmail().trim().toLowerCase() : null;
+        if (userRepository.existsByEmailIgnoreCase(normalizedEmail)) {
             throw new RuntimeException("Email already exists");
         }
 
         User user = new User();
-        user.setEmail(request.getEmail());
+        user.setEmail(normalizedEmail);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
@@ -69,15 +70,23 @@ public class AuthService {
         return new AuthResponse("User successfully registered", savedUser.getUserId(), savedUser.getEmail(), savedUser.getRole());
     }
 
-    public String refreshToken(String refreshToken) {
-        if (!jwtUtils.validateRefreshToken(refreshToken)) {
-            throw new RuntimeException("Invalid refresh token");
+    // Refresh disabled
+
+    public void changePassword(String username, String currentPassword, String newPassword) {
+        String normalizedEmail = username != null ? username.trim().toLowerCase() : null;
+        Optional<User> userOptional = userRepository.findByEmailIgnoreCase(normalizedEmail);
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found");
         }
 
-        // Generate new access token from refresh token
-        String newAccessToken = jwtUtils.generateAccessTokenFromRefreshToken(refreshToken);
+        User user = userOptional.get();
+        if (!passwordEncoder.matches(currentPassword, user.getPassword())) {
+            throw new RuntimeException("Current password is incorrect");
+        }
 
-        return newAccessToken;
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setUpdatedAt(LocalDateTime.now());
+        userRepository.save(user);
     }
 
     private String generateUniqueUserId() {

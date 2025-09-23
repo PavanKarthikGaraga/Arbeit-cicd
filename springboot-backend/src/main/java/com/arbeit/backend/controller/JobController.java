@@ -1,6 +1,5 @@
 package com.arbeit.backend.controller;
 
-import com.arbeit.backend.dto.JobDTO;
 import com.arbeit.backend.model.Job;
 import com.arbeit.backend.service.JobService;
 import org.springframework.http.HttpStatus;

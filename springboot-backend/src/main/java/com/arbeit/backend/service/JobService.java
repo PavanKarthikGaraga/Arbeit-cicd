@@ -34,7 +34,8 @@ public class JobService {
     }
 
     public Job createJob(JobDTO jobDTO, String companyEmail) {
-        Optional<Company> companyOpt = companyRepository.findByCompanyEmail(companyEmail);
+        String normalizedEmail = companyEmail != null ? companyEmail.trim().toLowerCase() : null;
+        Optional<Company> companyOpt = companyRepository.findByCompanyEmailIgnoreCase(normalizedEmail);
         if (companyOpt.isEmpty()) {
             throw new RuntimeException("Company not found");
         }
@@ -46,7 +47,7 @@ public class JobService {
         job.setTitle(jobDTO.getTitle());
         job.setCompanyName(company.getCompanyName());
         job.setBusinessName(company.getCompanyName());
-        job.setCompanyEmail(companyEmail);
+        job.setCompanyEmail(normalizedEmail);
         job.setBid(company.getBid());
         job.setLocation(jobDTO.getLocation());
         job.setCity(jobDTO.getCity());
@@ -76,10 +77,12 @@ public class JobService {
     }
 
     public List<Job> getCompanyJobs(String companyEmail) {
-        return jobRepository.findByCompanyEmail(companyEmail);
+        String normalizedEmail = companyEmail != null ? companyEmail.trim().toLowerCase() : null;
+        return jobRepository.findByCompanyEmailIgnoreCase(normalizedEmail);
     }
 
     public Optional<Job> updateJob(String jobId, JobDTO jobDTO, String companyEmail) {
+        String normalizedEmail = companyEmail != null ? companyEmail.trim().toLowerCase() : null;
         Optional<Job> jobOpt = jobRepository.findByJobId(jobId);
         if (jobOpt.isEmpty()) {
             return Optional.empty();
@@ -88,7 +91,7 @@ public class JobService {
         Job job = jobOpt.get();
 
         // Verify ownership
-        if (!job.getCompanyEmail().equals(companyEmail)) {
+        if (!job.getCompanyEmail().equals(normalizedEmail)) {
             throw new RuntimeException("Unauthorized to update this job");
         }
 
@@ -120,6 +123,7 @@ public class JobService {
     }
 
     public boolean deleteJob(String jobId, String companyEmail) {
+        String normalizedEmail = companyEmail != null ? companyEmail.trim().toLowerCase() : null;
         Optional<Job> jobOpt = jobRepository.findByJobId(jobId);
         if (jobOpt.isEmpty()) {
             return false;
@@ -128,7 +132,7 @@ public class JobService {
         Job job = jobOpt.get();
 
         // Verify ownership
-        if (!job.getCompanyEmail().equals(companyEmail)) {
+        if (!job.getCompanyEmail().equals(normalizedEmail)) {
             throw new RuntimeException("Unauthorized to delete this job");
         }
 
