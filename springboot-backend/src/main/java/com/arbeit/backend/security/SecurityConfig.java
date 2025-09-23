@@ -78,7 +78,7 @@ public class SecurityConfig {
             allowedOrigins,
             "http://localhost:3000",
             "http://localhost:3001",
-            "http://54.159.15.170:9090",  // Tomcat server
+            "http://18.207.128.131:9090",  // Tomcat server
             "http://localhost:9090"      // Local Tomcat
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));

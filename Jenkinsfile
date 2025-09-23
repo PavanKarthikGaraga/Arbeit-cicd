@@ -11,7 +11,7 @@ pipeline {
         BACKEND_DIR = 'springboot-backend'
         FRONTEND_DIR = 'my-app'
 
-        TOMCAT_URL = 'http://34.228.115.205:9090/manager/text'
+        TOMCAT_URL = 'http://18.207.128.131:9090/manager/text'
         TOMCAT_USER = 'admin'
         TOMCAT_PASS = 'admin'
 
@@ -44,9 +44,9 @@ pipeline {
             steps {
                 dir("${env.FRONTEND_DIR}") {
                     sh """
-                        mkdir -p frontapp_war/WEB-INF
-                        cp -r out/* frontapp_war/
-                        jar -cvf ${env.WORKSPACE}/${FRONTEND_WAR} -C frontapp_war .
+                        mkdir -p ROOT/WEB-INF
+                        cp -r out/* ROOT/
+                        jar -cvf ${env.WORKSPACE}/${FRONTEND_WAR} -C ROOT .
                     """
                 }
                 sh 'ls -la ${WORKSPACE}/*.war 2>/dev/null || echo "No WAR files after frontend packaging"'
@@ -63,27 +63,27 @@ pipeline {
             }
         }
 
-        stage('Deploy Backend to Tomcat (/springapp)') {
+        stage('Deploy Backend to Tomcat (/api)') {
             steps {
                 dir("${env.WORKSPACE}") {
                     sh "ls -la ${BACKEND_WAR}"
                     sh """
                         curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
                           --upload-file ${BACKEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/springapp&update=true"
+                          "${TOMCAT_URL}/deploy?path=/api&update=true"
                     """
                 }
             }
         }
 
-        stage('Deploy Frontend to Tomcat (/frontapp)') {
+        stage('Deploy Frontend to Tomcat (/)') {
             steps {
                 dir("${env.WORKSPACE}") {
                     sh "ls -la ${FRONTEND_WAR}"
                     sh """
                         curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
                           --upload-file ${FRONTEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/frontapp&update=true"
+                          "${TOMCAT_URL}/deploy?path=/&update=true"
                     """
                 }
             }
@@ -92,8 +92,8 @@ pipeline {
 
     post {
         success {
-            echo "✅ Backend deployed: http://34.228.115.205:9090/springapp"
-            echo "✅ Frontend deployed: http://34.228.115.205:9090/frontapp"
+            echo "✅ Backend deployed: http://18.207.128.131:9090/api"
+            echo "✅ Frontend deployed: http://18.207.128.131:9090/"
         }
         failure {
             echo "❌ Build or deployment failed"
