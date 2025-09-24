@@ -5,7 +5,6 @@ import com.arbeit.backend.model.Company;
 import com.arbeit.backend.model.Job;
 import com.arbeit.backend.repository.CompanyRepository;
 import com.arbeit.backend.repository.JobRepository;
-import com.arbeit.backend.security.JwtUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,12 +16,10 @@ public class JobService {
 
     private final JobRepository jobRepository;
     private final CompanyRepository companyRepository;
-    private final JwtUtils jwtUtils;
 
-    public JobService(JobRepository jobRepository, CompanyRepository companyRepository, JwtUtils jwtUtils) {
+    public JobService(JobRepository jobRepository, CompanyRepository companyRepository) {
         this.jobRepository = jobRepository;
         this.companyRepository = companyRepository;
-        this.jwtUtils = jwtUtils;
     }
 
     public List<Job> getAllActiveJobs() {

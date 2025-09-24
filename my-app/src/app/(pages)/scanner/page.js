@@ -139,6 +139,7 @@ export default function ScannerPage() {
         headers: {
           'Content-Type': 'application/json'
         },
+        credentials: 'include',
         body: JSON.stringify({
           resumeText: fileContent
         })

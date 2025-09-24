@@ -52,10 +52,13 @@ public class BusinessProfileController {
 
             // Return only necessary fields
             Map<String, Object> profile = Map.of(
+                "email", company.getCompanyEmail(),
+                "role", company.getRole(),
+                "userId", company.getBid(),
+                "bid", company.getBid(),
                 "companyEmail", company.getCompanyEmail(),
                 "companyName", company.getCompanyName(),
-                "name", company.getName(),
-                "bid", company.getBid()
+                "name", company.getName()
             );
 
             return ResponseEntity.ok(profile);

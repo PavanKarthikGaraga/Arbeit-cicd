@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/applications").permitAll()
                 .requestMatchers("/mentorship/**").permitAll()
                 .requestMatchers("/project/**").permitAll()
+                .requestMatchers("/scanner/**").permitAll()
 
                 // Business-only endpoints
                 .requestMatchers("/business/**").hasRole("BUSINESS")
@@ -69,30 +70,21 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Allow configured origins plus deployed frontend
-        configuration.setAllowedOrigins(Arrays.asList(
-            allowedOrigins,
-            "http://localhost:3000",
-            "http://localhost:3001",
-            "http://18.207.128.131:9090",  // Tomcat server
-            "http://localhost:9090"      // Local Tomcat
-        ));
+    
+        // Allow all origins
+        configuration.setAllowedOriginPatterns(Arrays.asList(allowedOrigins));
+
+    
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true); 
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
-
+    
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

@@ -97,11 +97,11 @@ export default function BusinessDashboard() {
   useEffect(() => {
     if (!isLoading) {
       if (!user) {
-        router.replace('/auth');
+        router.replace('/Bauth');
         return;
       }
       if (user.role !== 'business') {
-        router.replace('/dashboard');
+        router.replace('/business');
         return;
       }
     }

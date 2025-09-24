@@ -23,16 +23,13 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final JobRepository jobRepository;
     private final JobService jobService;
-    private final FileService fileService;
 
     public ApplicationService(ApplicationRepository applicationRepository,
                             JobRepository jobRepository,
-                            JobService jobService,
-                            FileService fileService) {
+                            JobService jobService) {
         this.applicationRepository = applicationRepository;
         this.jobRepository = jobRepository;
         this.jobService = jobService;
-        this.fileService = fileService;
     }
 
     public Application submitApplication(ApplicationDTO applicationDTO) {

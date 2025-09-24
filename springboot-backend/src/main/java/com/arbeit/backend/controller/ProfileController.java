@@ -50,7 +50,15 @@ public class ProfileController {
             User user = userOpt.get();
             user.setPassword(null);
 
-            return ResponseEntity.ok(user);
+            // Add role and userId for frontend compatibility
+            Map<String, Object> profileResponse = Map.of(
+                "userId", user.getUserId(),
+                "email", user.getEmail(),
+                "role", user.getRole(),
+                "user", user
+            );
+
+            return ResponseEntity.ok(profileResponse);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Failed to fetch profile"));

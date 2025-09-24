@@ -68,13 +68,11 @@
             <version>1.5</version>
         </dependency>
 
-        <!-- Google AI (Gemini) - Temporarily commented out
+        <!-- HTTP Client for Gemini API -->
         <dependency>
-            <groupId>com.google.ai.generativeai</groupId>
-            <artifactId>generativeai</artifactId>
-            <version>0.2.0</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        -->
 
         <!-- MySQL Connector -->
         <dependency>
@@ -91,14 +89,13 @@
         </dependency>
 
         <!-- Development Tools -->
-        <!-- Temporarily commented out to fix JobDTO loading issue
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        -->
+       
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

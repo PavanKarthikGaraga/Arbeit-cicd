@@ -11,31 +11,50 @@ const commonSkills = [
 ];
 
 function parseRoadmap(text) {
-  const sections = text.split('\n\n');
   const milestones = [];
+  const lines = text.split('\n');
   let currentMilestone = null;
+  let currentSection = null;
 
-  sections.forEach(section => {
-    if (section.toLowerCase().includes('milestone')) {
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+
+    // Check for milestone header: **Milestone X: Title**
+    if (line.match(/\*\*Milestone \d+:/i)) {
       if (currentMilestone) {
         milestones.push(currentMilestone);
       }
       currentMilestone = {
-        title: section.split('\n')[0].trim().replace(/^###\s*/, ''),
+        title: line.replace(/\*\*Milestone \d+:\s*/i, '').replace(/\*\*/g, '').trim(),
         goals: [],
         resources: [],
         timeEstimate: ''
       };
-    } else if (currentMilestone) {
-      if (section.toLowerCase().includes('goal') || section.match(/^\d+\./)) {
-        currentMilestone.goals.push(...section.split('\n').filter(line => line.trim()));
-      } else if (section.toLowerCase().includes('resource') || section.toLowerCase().includes('certification')) {
-        currentMilestone.resources.push(...section.split('\n').filter(line => line.trim()));
-      } else if (section.toLowerCase().includes('time') || section.toLowerCase().includes('duration')) {
-        currentMilestone.timeEstimate = section.split('\n')[0].trim();
+      currentSection = null;
+    }
+    // Check for section headers
+    else if (currentMilestone && line.toLowerCase().includes('goals:')) {
+      currentSection = 'goals';
+    }
+    else if (currentMilestone && line.toLowerCase().includes('resources:')) {
+      currentSection = 'resources';
+    }
+    else if (currentMilestone && line.toLowerCase().includes('time estimate:')) {
+      currentSection = 'time';
+      currentMilestone.timeEstimate = line.replace(/time estimate:/i, '').trim();
+    }
+    // Parse content based on current section
+    else if (currentMilestone && currentSection && line) {
+      if (currentSection === 'goals' && (line.match(/^\d+\./) || line.startsWith('-'))) {
+        const goal = line.replace(/^\d+\.\s*/, '').replace(/^-\s*/, '').trim();
+        if (goal) currentMilestone.goals.push(goal);
+      }
+      else if (currentSection === 'resources' && (line.startsWith('-') || line.match(/^[A-Z]/))) {
+        const resource = line.replace(/^-\s*/, '').trim();
+        if (resource) currentMilestone.resources.push(resource);
       }
     }
-  });
+  }
 
   if (currentMilestone) {
     milestones.push(currentMilestone);

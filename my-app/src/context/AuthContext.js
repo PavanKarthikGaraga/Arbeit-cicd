@@ -8,9 +8,44 @@ export function AuthProvider({children}) {
     const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
-    // Do not auto-fetch on load; loading state should end immediately
+    // Check for existing JWT token on load and restore user state
     useEffect(() => {
-        setIsLoading(false);
+        const checkExistingToken = async () => {
+            try {
+                const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://18.207.128.131:9090/api';
+
+                // First try the regular user profile endpoint
+                let response = await fetch(`${backendUrl}/profile`, {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+
+                // If that fails with 401, try the business profile endpoint
+                if (response.status === 401) {
+                    response = await fetch(`${backendUrl}/business/profile`, {
+                        method: 'GET',
+                        credentials: 'include'
+                    });
+                }
+
+                if (response.ok) {
+                    const profileData = await response.json();
+                    // Restore user state from profile data
+                    setUser({
+                        email: profileData.email,
+                        role: profileData.role,
+                        id: profileData.userId || profileData.bid
+                    });
+                }
+            } catch (error) {
+                // Token is invalid or expired, user remains null
+                console.log('No valid existing session');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        checkExistingToken();
     }, []);
 
     // No periodic refresh; rely on single 30-minute token validity

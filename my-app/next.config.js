@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  output: 'standalone',
   trailingSlash: true,
   // basePath: '/frontapp',        // matches your Tomcat context path
   // assetPrefix: '/frontapp',     // ensures JS/CSS links work under /frontapp
