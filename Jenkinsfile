@@ -11,7 +11,7 @@ pipeline {
         BACKEND_DIR = 'springboot-backend'
         FRONTEND_DIR = 'my-app'
 
-        TOMCAT_URL = 'http://18.207.128.131:9090/manager/text'
+        TOMCAT_URL = 'http://54.175.124.104/:9090/manager/text'
         TOMCAT_USER = 'admin'
         TOMCAT_PASS = 'admin'
 
@@ -92,8 +92,8 @@ pipeline {
 
     post {
         success {
-            echo "✅ Backend deployed: http://18.207.128.131:9090/api"
-            echo "✅ Frontend deployed: http://18.207.128.131:9090/"
+            echo "✅ Backend deployed"
+            echo "✅ Frontend deployed"
         }
         failure {
             echo "❌ Build or deployment failed"

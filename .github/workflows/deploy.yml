@@ -20,10 +20,12 @@ jobs:
         username: ec2-user
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
+          sudo -i
+
           cd arbeit
 
           # Stop and remove existing containers
-          docker compose down
+          docker-compose down
 
           # Start services with the existing docker-compose.yml
-          docker compose up -d
+          docker-compose up -d
