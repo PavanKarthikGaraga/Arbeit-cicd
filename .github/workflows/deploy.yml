@@ -21,11 +21,14 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           sudo -i
-
           cd arbeit
 
-          # Stop and remove existing containers
-          docker-compose down
+          # Stop and remove existing containers + networks + anonymous volumes
+          docker-compose down -v --remove-orphans
+
+          # Remove any leftover container with the same name (if it exists)
+          docker rm -f arbeit-backend || true
+          docker rm -f arbeit-frontend || true
 
           # Start services with the existing docker-compose.yml
           docker-compose up -d --build
