@@ -39,15 +39,16 @@ RUN mkdir -p /app/uploads && chown -R spring:spring /app
 USER spring
 
 # Expose port
-EXPOSE 8080
+EXPOSE 9090
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+  CMD curl -f http://localhost:9090/actuator/health || exit 1
 
 # Environment variables
 ENV JAVA_OPTS="-Xmx512m -Xms256m"
 ENV SPRING_PROFILES_ACTIVE=docker
+ENV SERVER_PORT=9090
 
 # Start the application
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.war"]
