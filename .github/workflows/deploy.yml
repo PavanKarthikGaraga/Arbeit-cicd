@@ -28,4 +28,4 @@ jobs:
           docker-compose down
 
           # Start services with the existing docker-compose.yml
-          docker-compose up -d
+          docker-compose up -d --build

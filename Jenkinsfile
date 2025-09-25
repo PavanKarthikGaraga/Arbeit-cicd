@@ -11,7 +11,7 @@ pipeline {
         BACKEND_DIR = 'springboot-backend'
         FRONTEND_DIR = 'my-app'
 
-        TOMCAT_URL = 'http://54.175.124.104/:9090/manager/text'
+        TOMCAT_URL = 'http://54.175.124.104:9090/manager/text'
         TOMCAT_USER = 'admin'
         TOMCAT_PASS = 'admin'
 
