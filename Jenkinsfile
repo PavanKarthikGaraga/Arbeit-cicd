@@ -1,12 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'JAVA_HOME'
-        maven 'MAVEN_HOME'
-        nodejs 'NODE_HOME'
-    }
-
     environment {
         BACKEND_DIR = 'springboot-backend'
         FRONTEND_DIR = 'my-app'
@@ -17,6 +11,11 @@ pipeline {
 
         BACKEND_WAR = 'arbeits-backend.war'
         FRONTEND_WAR = 'frontapp.war'
+
+        JAVA_HOME = '/usr/lib/jvm/java-21-openjdk-amd64'
+        MAVEN_HOME = '/opt/maven'
+        NODE_HOME = '/usr'
+        PATH = "${env.JAVA_HOME}/bin:${env.MAVEN_HOME}/bin:${env.NODE_HOME}/bin:${env.PATH}"
     }
 
     stages {
@@ -29,10 +28,8 @@ pipeline {
         stage('Build Frontend (Next.js)') {
             steps {
                 dir("${env.FRONTEND_DIR}") {
-                    script {
-                        def nodeHome = tool name: 'NODE_HOME', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
-                        env.PATH = "${nodeHome}/bin:${env.PATH}"
-                    }
+                    sh 'node -v'
+                    sh 'npm -v'
                     sh 'npm install'
                     sh 'npm run export-war'
                     sh 'ls -la out/ 2>/dev/null || echo "ERROR: out/ directory not created"'
@@ -99,4 +96,4 @@ pipeline {
             echo "❌ Build or deployment failed"
         }
     }
-}   
+}
