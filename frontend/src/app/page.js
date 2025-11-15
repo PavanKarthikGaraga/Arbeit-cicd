@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
-import Link from 'next/link';
+import Link from 'next/link.js';
 import Nav from './components/nav/nav.js';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
