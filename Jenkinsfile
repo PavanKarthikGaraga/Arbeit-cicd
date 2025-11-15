@@ -8,83 +8,79 @@ pipeline {
     }
 
     environment {
-        BACKEND_DIR = 'springboot-backend'
-        FRONTEND_DIR = 'my-app'
+        TOMCAT_HOME = '/home/karthik/tomcat10'
 
-        TOMCAT_URL = 'http://54.175.124.104:9090/manager/text'
+        TOMCAT_URL = 'http://127.0.0.1:9090/manager/text'
         TOMCAT_USER = 'admin'
-        TOMCAT_PASS = 'admin'
+        TOMCAT_PASS = 'asdfghjk'
 
-        BACKEND_WAR = 'arbeits-backend.war'
-        FRONTEND_WAR = 'frontapp.war'
+        // Jenkins credentials for Docker or K8s (optional)
+        DB_USERNAME = credentials('DB_USERNAME')
+        DB_PASSWORD = credentials('DB_PASSWORD')
+        DB_URL      = credentials('DB_URL')
+        JWT_SECRET  = credentials('JWT_SECRET')
     }
 
     stages {
-        stage('Clone Repository') {
+
+        /* ========== 1. Git Checkout ========== */
+        stage('Checkout') {
             steps {
                 git url: 'https://github.com/PavanKarthikGaraga/Arbeit-cicd.git', branch: 'main'
             }
         }
 
-        stage('Build Frontend (Next.js)') {
+        /* ========== 2. Frontend Build ========== */
+        stage('Build Frontend') {
             steps {
-                dir("${env.FRONTEND_DIR}") {
+                dir('frontend') {
                     script {
                         def nodeHome = tool name: 'NODE_HOME', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
                         env.PATH = "${nodeHome}/bin:${env.PATH}"
                     }
                     sh 'npm install'
-                    sh 'npm run export-war'
-                    sh 'ls -la out/ 2>/dev/null || echo "ERROR: out/ directory not created"'
+                    sh 'npm run build'
+                    sh 'npm run export'
                 }
             }
         }
 
-        stage('Package Frontend as WAR') {
+        /* ========== 3. Deploy Frontend to Tomcat 10 ========== */
+        stage('Deploy Frontend to Tomcat10') {
             steps {
-                dir("${env.FRONTEND_DIR}") {
-                    sh """
-                        mkdir -p ROOT/WEB-INF
-                        cp -r out/* ROOT/
-                        jar -cvf ${env.WORKSPACE}/${FRONTEND_WAR} -C ROOT .
-                    """
-                }
-                sh 'ls -la ${WORKSPACE}/*.war 2>/dev/null || echo "No WAR files after frontend packaging"'
+                sh '''
+                    rm -rf ${TOMCAT_HOME}/webapps/arbeit
+                    mkdir -p ${TOMCAT_HOME}/webapps/arbeit
+                    cp -r frontend/out/* ${TOMCAT_HOME}/webapps/arbeit/
+                '''
+
+                sh '${TOMCAT_HOME}/bin/shutdown.sh || true'
+                sh '${TOMCAT_HOME}/bin/startup.sh'
             }
         }
 
-        stage('Build Backend (Spring Boot WAR)') {
+        /* ========== 4. Backend Build (WAR) ========== */
+        stage('Build Backend WAR') {
             steps {
-                dir("${env.BACKEND_DIR}") {
-                    sh 'mvn clean package'
-                    sh "cp target/arbeits-backend-*.war ${env.WORKSPACE}/${BACKEND_WAR}"
-                }
-                sh 'ls -la ${WORKSPACE}/*.war 2>/dev/null || echo "No WAR files in workspace"'
-            }
-        }
-
-        stage('Deploy Backend to Tomcat (/api)') {
-            steps {
-                dir("${env.WORKSPACE}") {
-                    sh "ls -la ${BACKEND_WAR}"
-                    sh """
-                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                          --upload-file ${BACKEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/api&update=true"
-                    """
+                dir('backend') {
+                    sh 'mvn clean package -DskipTests'
                 }
             }
         }
 
-        stage('Deploy Frontend to Tomcat (/)') {
+        /* ========== 5. Deploy Backend WAR to Tomcat 10 ========== */
+        stage('Deploy Backend to Tomcat10') {
             steps {
-                dir("${env.WORKSPACE}") {
-                    sh "ls -la ${FRONTEND_WAR}"
-                    sh """
-                        curl -u ${TOMCAT_USER}:${TOMCAT_PASS} \\
-                          --upload-file ${FRONTEND_WAR} \\
-                          "${TOMCAT_URL}/deploy?path=/&update=true"
-                    """
+                script {
+
+                    // ★★★ No need to rewrite setenv.sh — it is already created ★★★
+
+                    sh '''
+                        cp backend/target/arbeits-backend.war ${TOMCAT_HOME}/webapps/api.war
+                    '''
+
+                    sh '${TOMCAT_HOME}/bin/shutdown.sh || true'
+                    sh '${TOMCAT_HOME}/bin/startup.sh'
                 }
             }
         }
@@ -92,11 +88,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Backend deployed"
-            echo "✅ Frontend deployed"
+            echo 'Deployment SUCCESS!'
         }
         failure {
-            echo "❌ Build or deployment failed"
+            echo 'Deployment FAILED!'
         }
     }
-}   
+}

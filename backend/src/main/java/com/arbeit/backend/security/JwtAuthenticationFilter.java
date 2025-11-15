@@ -1,6 +1,8 @@
 package com.arbeit.backend.security;
 
 import jakarta.servlet.FilterChain;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +19,8 @@ import java.util.Collections;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
     private final JwtUtils jwtUtils;
 
     public JwtAuthenticationFilter(JwtUtils jwtUtils) {
@@ -27,22 +31,27 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        String token = extractTokenFromCookies(request);
+        try {
+            String token = extractTokenFromCookies(request);
 
-        if (token != null && jwtUtils.validateAccessToken(token)) {
-            String username = jwtUtils.getUsernameFromToken(token);
-            String role = jwtUtils.getRoleFromToken(token);
+            if (token != null && jwtUtils.validateAccessToken(token)) {
+                String username = jwtUtils.getUsernameFromToken(token);
+                String role = jwtUtils.getRoleFromToken(token);
 
-            if (username != null && role != null) {
-                UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                        username,
-                        null,
-                        Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
-                    );
+                if (username != null && role != null) {
+                    UsernamePasswordAuthenticationToken authentication =
+                        new UsernamePasswordAuthenticationToken(
+                            username,
+                            null,
+                            Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role.toUpperCase()))
+                        );
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
+        } catch (Exception e) {
+            // Log the error but don't fail the request - just continue without authentication
+            logger.debug("JWT token validation failed: {}", e.getMessage());
         }
 
         filterChain.doFilter(request, response);

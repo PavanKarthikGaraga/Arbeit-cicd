@@ -107,7 +107,8 @@ public class JwtUtils {
     public Boolean validateAccessToken(String token) {
         try {
             return !isTokenExpired(token);
-        } catch (MalformedJwtException | UnsupportedJwtException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException | MalformedJwtException | UnsupportedJwtException |
+                 IllegalArgumentException | SignatureException e) {
             return false;
         }
     }

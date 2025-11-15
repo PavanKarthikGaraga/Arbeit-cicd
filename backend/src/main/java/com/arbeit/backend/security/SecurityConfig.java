@@ -41,6 +41,9 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authz -> authz
                 // Public endpoints
+                .requestMatchers("/").permitAll() // Root API info
+                .requestMatchers("/api/").permitAll() // API info
+                .requestMatchers("/health").permitAll() // Health check
                 .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/auth/business/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/jobs").permitAll()
@@ -71,18 +74,23 @@ public class SecurityConfig {
         return http.build();
     }
     @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-    
+
         // Allow all origins
         configuration.setAllowedOriginPatterns(Arrays.asList(allowedOrigins));
 
-    
+
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
-        configuration.setAllowCredentials(true); 
+        configuration.setAllowCredentials(true);
         configuration.setExposedHeaders(Arrays.asList("Authorization"));
-    
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
