@@ -9,28 +9,18 @@ pipeline {
 
     environment {
         TOMCAT_HOME = '/home/karthik/tomcat10'
-
-        TOMCAT_URL = 'http://127.0.0.1:9090/manager/text'
-        TOMCAT_USER = 'admin'
-        TOMCAT_PASS = 'asdfghjk'
-
-        // Jenkins credentials for Docker or K8s (optional)
-        DB_USERNAME = credentials('DB_USERNAME')
-        DB_PASSWORD = credentials('DB_PASSWORD')
-        DB_URL      = credentials('DB_URL')
-        JWT_SECRET  = credentials('JWT_SECRET')
     }
 
     stages {
 
-        /* ========== 1. Git Checkout ========== */
+        /* ========== 1. Checkout Code ========== */
         stage('Checkout') {
             steps {
                 git url: 'https://github.com/PavanKarthikGaraga/Arbeit-cicd.git', branch: 'main'
             }
         }
 
-        /* ========== 2. Frontend Build ========== */
+        /* ========== 2. Build Frontend ========== */
         stage('Build Frontend') {
             steps {
                 dir('frontend') {
@@ -59,7 +49,7 @@ pipeline {
             }
         }
 
-        /* ========== 4. Backend Build (WAR) ========== */
+        /* ========== 4. Build Backend WAR ========== */
         stage('Build Backend WAR') {
             steps {
                 dir('backend') {
@@ -68,20 +58,15 @@ pipeline {
             }
         }
 
-        /* ========== 5. Deploy Backend WAR to Tomcat 10 ========== */
+        /* ========== 5. Deploy Backend to Tomcat 10 ========== */
         stage('Deploy Backend to Tomcat10') {
             steps {
-                script {
+                sh '''
+                    cp backend/target/arbeits-backend.war ${TOMCAT_HOME}/webapps/api.war
+                '''
 
-                    // ★★★ No need to rewrite setenv.sh — it is already created ★★★
-
-                    sh '''
-                        cp backend/target/arbeits-backend.war ${TOMCAT_HOME}/webapps/api.war
-                    '''
-
-                    sh '${TOMCAT_HOME}/bin/shutdown.sh || true'
-                    sh '${TOMCAT_HOME}/bin/startup.sh'
-                }
+                sh '${TOMCAT_HOME}/bin/shutdown.sh || true'
+                sh '${TOMCAT_HOME}/bin/startup.sh'
             }
         }
     }
