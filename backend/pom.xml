@@ -11,7 +11,7 @@
     <groupId>com.arbeit</groupId>
     <artifactId>arbeits-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>arbeits-backend</name>
     <description>Backend API for Arbeit Job Platform</description>
     <properties>
@@ -76,12 +76,6 @@
             <version>8.0.33</version>
         </dependency>
 
-        <!-- Tomcat for WAR deployment -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-tomcat</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- Development Tools -->
         <dependency>
@@ -116,12 +110,8 @@
         <finalName>arbeits-backend</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.4.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>

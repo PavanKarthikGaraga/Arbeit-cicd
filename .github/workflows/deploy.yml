@@ -2,33 +2,36 @@ name: Deploy to Production
 
 on:
   push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Production
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
 
     steps:
-    - name: Deploy to server
-      uses: appleboy/ssh-action@v1.0.0
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ec2-user
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          sudo -i
-          cd arbeit
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            set -e
 
-          # Stop and remove existing containers + networks + anonymous volumes
-          docker-compose down -v --remove-orphans
+            echo "--- Switching to project folder ---"
+            cd /home/ubuntu/Arbeit-cicd
 
-          # Remove any leftover container with the same name (if it exists)
-          docker rm -f arbeit-backend || true
-          docker rm -f arbeit-frontend || true
+            echo "--- Pulling latest code ---"
+            git pull origin main
 
-          # Start services with the existing docker-compose.yml
-          docker-compose up -d --build
+            echo "--- Stopping existing containers ---"
+            sudo docker compose down --remove-orphans || true
+
+            echo "--- Removing old container names ---"
+            sudo docker rm -f arbeit-backend || true
+            sudo docker rm -f arbeit-frontend || true
+
+            echo "--- Building and deploying new containers ---"
+            sudo docker compose up -d --build
+
+            echo "🎉 Deployment Successful!"
