@@ -45,6 +45,7 @@ pipeline {
                 '''
 
                 sh '${TOMCAT_HOME}/bin/shutdown.sh || true'
+                sleep 3
                 sh '${TOMCAT_HOME}/bin/startup.sh'
             }
         }
