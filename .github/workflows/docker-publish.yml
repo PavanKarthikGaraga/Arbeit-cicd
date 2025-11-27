@@ -53,7 +53,7 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
       - name: Run Ansible Playbook
-        run: ansible-playbook ansible/deploy.yml -i ansible/inventory.ini
+        run: ansible-playbook ansible/playbook.yml -i ansible/inventory.ini
         env:
           ANSIBLE_HOST_KEY_CHECKING: "False"
           VERSION_TAG: ${{ steps.vars.outputs.VERSION_TAG }}

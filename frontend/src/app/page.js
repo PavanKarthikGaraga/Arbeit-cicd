@@ -93,7 +93,7 @@ export default function Home() {
                   transition={{ delay: 0.2 }}
                   className="inline-block mb-6 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary font-medium text-sm tracking-wide"
                 >
-                  🚀 The Future of Job Search is Here
+                   The Future of Job Search is Here
                 </motion.div>
 
                 <motion.h1
