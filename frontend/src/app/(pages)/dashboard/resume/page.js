@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
+import { Github, Linkedin } from 'lucide-react';
 import './page.css';
 
 const GenerateResume = () => {
@@ -65,9 +66,9 @@ const GenerateResume = () => {
   const addProject = () => {
     setFormData(prev => ({
       ...prev,
-      projects: [...prev.projects, { 
-        name: '', 
-        description: '', 
+      projects: [...prev.projects, {
+        name: '',
+        description: '',
         technologies: '',
         githubUrl: '',
         details: []
@@ -107,7 +108,7 @@ const GenerateResume = () => {
   const generatePDF = async () => {
     const element = resumeRef.current;
     const html2pdf = (await import('html2pdf.js')).default;
-    
+
     const opt = {
       margin: [10, 10],
       filename: `${formData.fullName.trim() || 'resume'}.pdf`,
@@ -126,7 +127,7 @@ const GenerateResume = () => {
           ← Back to Dashboard
         </button>
         <h2>Professional Resume Builder</h2>
-        
+
         <div className="form-steps">
           {steps.map((step) => (
             <div key={step.number} className={`step ${currentStep >= step.number ? 'active' : ''}`}>
@@ -182,7 +183,7 @@ const GenerateResume = () => {
                 className="input-field"
               />
             </div>
-            
+
             <div className="form-row">
               <input
                 type="text"
@@ -372,16 +373,15 @@ const GenerateResume = () => {
 
         <div className="form-navigation">
           {currentStep > 1 && (
-            <button 
+            <button
               onClick={() => setCurrentStep(prev => prev - 1)}
-              className="add-button"
-              style={{ marginRight: '1rem', background: '#64748b' }}
+              className="add-button bg-muted text-muted-foreground hover:bg-muted/80 mr-4"
             >
               Previous
             </button>
           )}
           {currentStep < 5 && (
-            <button 
+            <button
               onClick={() => setCurrentStep(prev => prev + 1)}
               className="add-button"
             >
@@ -695,9 +695,9 @@ const MinimalTemplate = ({ formData }) => (
     </div>
     {(formData.github || formData.linkedin) && (
       <div className="contact-line">
-        {formData.github && <span><i className="fab fa-github"></i> github.com/{formData.github}</span>}
+        {formData.github && <span className="flex items-center gap-1"><Github size={12} /> github.com/{formData.github}</span>}
         {formData.github && formData.linkedin && " • "}
-        {formData.linkedin && <span><i className="fab fa-linkedin"></i> linkedin.com/in/{formData.linkedin}</span>}
+        {formData.linkedin && <span className="flex items-center gap-1"><Linkedin size={12} /> linkedin.com/in/{formData.linkedin}</span>}
       </div>
     )}
 

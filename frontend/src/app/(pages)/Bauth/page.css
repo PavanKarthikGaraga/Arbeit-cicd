@@ -215,7 +215,7 @@ body {
   }
   
   .input-group input:focus {
-    border-color: #4f46e5;
+    border-color: var(--primary);
     outline: none;
   }
   
@@ -240,7 +240,7 @@ body {
   .input-group input:not(:placeholder-shown) + label {
     top: 0;
     font-size: 0.875rem;
-    color: #4f46e5;
+    color: var(--primary);
   }
   
   .input-group input:disabled + label {
@@ -261,12 +261,13 @@ body {
   }
   
   .verify-button {
-    background: #4f46e5;
-    color: white;
+    background: var(--primary);
+    color: var(--primary-foreground);
   }
   
   .verify-button:hover:not(:disabled) {
-    background: #4338ca;
+    background: var(--primary);
+    opacity: 0.9;
   }
   
   .reset-button {

@@ -25,7 +25,7 @@
   margin: 1.5rem 2rem;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   animation: fadeSlideDown 0.5s ease forwards;
 }
 
@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 102, 255, 0.12);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 
 .sparkle {
@@ -65,7 +65,7 @@
 }
 
 .notification-text h2 {
-  color: #0066FF;
+  color: var(--primary);
   font-size: 1.125rem;
   font-weight: 600;
   margin: 0 0 0.375rem 0;
@@ -85,8 +85,8 @@
 }
 
 .update-button {
-  background: #0066FF;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
   padding: 0.75rem 1.25rem;
   border-radius: 10px;
   text-decoration: none;
@@ -100,9 +100,10 @@
 }
 
 .update-button:hover {
-  background: #0052cc;
+  background: var(--primary);
+  opacity: 0.9;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 102, 255, 0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .arrow {
@@ -135,7 +136,7 @@
 
 .progress-bar {
   height: 3px;
-  background: rgba(0, 102, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -148,7 +149,7 @@
   left: 0;
   top: 0;
   height: 100%;
-  background: #0066FF;
+  background: var(--primary);
   animation: progress 8s linear forwards;
 }
 
@@ -202,7 +203,7 @@
 }
 
 .logo h1 {
-  color: #0066FF;
+  color: var(--primary);
   font-size: 1.75rem;
   font-weight: 700;
   margin: 0;
@@ -226,13 +227,13 @@
 
 .search-bar input:focus {
   outline: none;
-  border-color: #0066FF;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.1);
 }
 
 .search-button {
   padding: 0.75rem 1.5rem;
-  background: #0066FF;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -242,7 +243,8 @@
 }
 
 .search-button:hover {
-  background: #0052cc;
+  background: var(--primary);
+  opacity: 0.9;
 }
 
 .header-nav {
@@ -261,7 +263,7 @@
 }
 
 .nav-link:hover {
-  color: #0066FF;
+  color: var(--primary);
   background: #f0f7ff;
 }
 
@@ -287,7 +289,7 @@
 }
 
 .profile-button i {
-  color: #0066FF;
+  color: var(--primary);
   font-size: 1.2rem;
 }
 
@@ -322,7 +324,7 @@
 
 .dropdown-item:hover {
   background: #f0f7ff;
-  color: #0066FF;
+  color: var(--primary);
 }
 
 /* Filters */
@@ -359,15 +361,16 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #0066FF;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.1);
 }
 
 /* Main Content */
 .dashboard-main {
-  max-width: 1400px;
+  width: 85%;
+  max-width: none;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
 .jobs-grid {
@@ -392,7 +395,7 @@
 .job-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  border-color: #0066FF;
+  border-color: var(--primary);
 }
 
 .job-card-header {
@@ -411,7 +414,7 @@
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: #0066FF;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -442,7 +445,7 @@
 .job-id {
   font-family: monospace;
   font-size: 0.875rem;
-  color: #0066FF;
+  color: var(--primary);
   font-weight: 600;
 }
 
@@ -507,7 +510,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #0066FF;
+  border-top: 3px solid var(--primary);
   border-radius: 50%;
   margin: 0 auto 1rem;
   animation: spin 1s linear infinite;

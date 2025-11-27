@@ -5,11 +5,36 @@ import Link from 'next/link.js';
 import Nav from './components/nav/nav.js';
 import { useInView } from 'react-intersection-observer';
 import { useState, useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import {
+  BarChart3,
+  Building2,
+  Users,
+  Star,
+  Target,
+  TrendingUp,
+  Lightbulb,
+  Zap,
+  Search,
+  Check,
+  AlertTriangle,
+  Brain,
+  Globe,
+  User,
+  Rocket,
+  Bot,
+  GraduationCap,
+  BookOpen,
+  ArrowRight
+} from 'lucide-react';
 
 const particles = Array.from({ length: 30 }).map((_, i) => ({
-  left: `${5 * i}%`,
-  top: `${(7 * i) % 100}%`,
-  size: 2 + (i % 3),
+  left: `${Math.random() * 100}%`,
+  top: `${Math.random() * 100}%`,
+  size: Math.random() * 4 + 1,
+  duration: Math.random() * 10 + 10,
 }));
 
 // Counter animation component
@@ -22,7 +47,7 @@ const AnimatedCounter = ({ value, duration = 2 }) => {
       let start = 0;
       const end = parseInt(value.replace(/,/g, ''));
       const incrementTime = (duration * 1000) / end;
-      
+
       const timer = setInterval(() => {
         start += 1;
         setCount(start);
@@ -45,158 +70,136 @@ export default function Home() {
   });
 
   return (
-    <div className="min-h-screen bg-white text-gray-900">
-      {/* New Background */}
-      <div className="absolute top-0 -z-10 h-full w-full bg-white">
-        <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] opacity-50 blur-[80px]"></div>
-        <div className="absolute bottom-0 left-0 h-[500px] w-[500px] translate-x-[20%] translate-y-[20%] rounded-full bg-[rgba(59,130,246,0.5)] opacity-50 blur-[80px]"></div>
-      </div>
+    <div className="min-h-screen bg-background text-foreground">
 
       <Nav />
 
       {/* Hero Section */}
-      <section className="relative py-20">
-        <div className="container mx-auto px-6">
+      <section className="relative py-32 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/20 via-background to-background" />
+        <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-7xl mx-auto">
             <div className="flex flex-col lg:flex-row items-center gap-16">
               {/* Left Content */}
-              <motion.div 
+              <motion.div
                 className="flex-1 text-center lg:text-left"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
               >
                 <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="relative inline-block"
+                  className="inline-block mb-6 px-4 py-1.5 rounded-full border border-primary/20 bg-primary/5 text-primary font-medium text-sm tracking-wide"
                 >
+                  🚀 The Future of Job Search is Here
                 </motion.div>
-                
-                <motion.h1 
-                  className="text-6xl lg:text-7xl font-bold mb-8 leading-tight"
-                  initial={{ opacity: 0, y: 20 }}
+
+                <motion.h1
+                  className="text-7xl lg:text-9xl font-black mb-8 leading-[0.9] tracking-tighter text-foreground"
+                  initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
+                  transition={{ delay: 0.4, duration: 0.8 }}
                 >
                   Find Your{' '}
-                  <span className="text-blue-600">
-                    Dreamed
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/50 relative inline-block">
+                    Dream
                   </span>
                   <br />
                   Career Today
                 </motion.h1>
 
-                <motion.p 
-                  className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto lg:mx-0"
+                <motion.p
+                  className="text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto lg:mx-0 font-light leading-relaxed"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 }}
                 >
-                  Your one-stop platform for job search, resume building, and career growth.
+                  Unlock your potential with AI-powered matching, resume optimization, and personalized mentorship.
                 </motion.p>
 
                 <motion.div
-                  className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+                  className="flex flex-col sm:flex-row gap-6 justify-center lg:justify-start"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.8 }}
                 >
                   <Link href="/Bauth">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
-                    >
+                    <Button size="lg" className="w-full sm:w-auto px-10 py-6 text-xl rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">
                       Get Started as Recruiter
-                    </motion.button>
+                    </Button>
                   </Link>
                   <Link href="/auth">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full sm:w-auto px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold text-lg border-2 border-blue-600 hover:bg-blue-50 transition-all"
-                    >
+                    <Button variant="outline" size="lg" className="w-full sm:w-auto px-10 py-6 text-xl rounded-2xl border-2 hover:bg-secondary transition-all duration-300">
                       Join as Freelancer
-                    </motion.button>
+                    </Button>
                   </Link>
                 </motion.div>
               </motion.div>
 
               {/* Right Content - Hero Illustration */}
-              <motion.div 
+              <motion.div
                 className="flex-1 relative"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
+                initial={{ opacity: 0, scale: 0.8, rotate: 5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ delay: 0.4, duration: 1, type: "spring" }}
               >
-                <div className="relative w-full aspect-square">
-                  <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-white rounded-3xl transform rotate-6" />
-                  <div className="absolute inset-0 bg-white rounded-3xl shadow-xl p-8">
-                    <div className="relative h-full">
-                      {/* Resume Preview */}
-                      <div className="absolute top-4 left-4 right-4 bottom-4 bg-gray-50 rounded-2xl p-6 shadow-inner">
-                        {/* Header with Avatar */}
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                            <svg className="w-8 h-8 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                          </div>
-                          <div className="flex-1">
-                            <div className="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
-                            <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-                          </div>
+                <div className="relative w-full aspect-square max-w-[600px] mx-auto">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-primary/30 to-transparent rounded-[3rem] transform rotate-6 blur-2xl" />
+                  <div className="absolute inset-0 bg-card/80 backdrop-blur-xl rounded-[3rem] shadow-2xl border border-white/10 p-8">
+                    <div className="relative h-full flex flex-col justify-between">
+                      {/* Resume Preview Header */}
+                      <div className="flex items-center gap-6 mb-8">
+                        <div className="w-20 h-20 bg-gradient-to-br from-primary to-primary/50 rounded-2xl flex items-center justify-center shadow-lg">
+                          <User className="w-10 h-10 text-white" />
                         </div>
-                        {/* Content Lines */}
-                        <div className="space-y-4">
-                          <div className="flex items-center gap-2">
-                            <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                            <div className="h-3 bg-gray-200 rounded w-full"></div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                            </svg>
-                            <div className="h-3 bg-gray-200 rounded w-5/6"></div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                            </svg>
-                            <div className="h-3 bg-gray-200 rounded w-4/6"></div>
-                          </div>
-                        </div>
-                        {/* Skills Section */}
-                        <div className="mt-6">
-                          <div className="flex flex-wrap gap-2">
-                            {["React", "Node.js", "Python", "AI/ML"].map((skill, i) => (
-                              <span key={i} className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm flex items-center gap-1">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 8 8">
-                                  <circle cx="4" cy="4" r="3" />
-                                </svg>
-                                {skill}
-                              </span>
-                            ))}
-                          </div>
+                        <div className="flex-1 space-y-3">
+                          <div className="h-5 bg-primary/10 rounded-full w-3/4"></div>
+                          <div className="h-4 bg-primary/5 rounded-full w-1/2"></div>
                         </div>
                       </div>
-                      {/* Floating Elements */}
-                      <div className="absolute -right-4 top-1/4 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center transform rotate-12">
-                        <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
+
+                      {/* Content Lines */}
+                      <div className="space-y-6 flex-1">
+                        {[1, 2, 3].map((_, i) => (
+                          <div key={i} className="flex items-center gap-4 p-4 rounded-2xl bg-secondary/30 border border-white/5">
+                            <div className="w-10 h-10 rounded-xl bg-background flex items-center justify-center text-primary">
+                              {i === 0 ? <Building2 size={20} /> : i === 1 ? <Target size={20} /> : <GraduationCap size={20} />}
+                            </div>
+                            <div className="flex-1 h-3 bg-primary/10 rounded-full"></div>
+                          </div>
+                        ))}
                       </div>
-                      <div className="absolute -left-4 bottom-1/4 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center transform -rotate-12">
-                        <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                        </svg>
+
+                      {/* Skills Section */}
+                      <div className="mt-8">
+                        <div className="flex flex-wrap gap-3">
+                          {["React", "Node.js", "AI/ML", "Design"].map((skill, i) => (
+                            <span key={i} className="px-4 py-2 bg-background border border-primary/10 text-primary rounded-xl text-sm font-medium shadow-sm">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
+
+                  {/* Floating Elements */}
+                  <motion.div
+                    animate={{ y: [0, -20, 0] }}
+                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute -right-8 top-1/4 w-20 h-20 bg-background/90 backdrop-blur-md rounded-3xl shadow-2xl flex items-center justify-center border border-white/20"
+                  >
+                    <Star className="w-10 h-10 text-yellow-500 fill-yellow-500" />
+                  </motion.div>
+                  <motion.div
+                    animate={{ y: [0, 20, 0] }}
+                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                    className="absolute -left-8 bottom-1/4 w-20 h-20 bg-background/90 backdrop-blur-md rounded-3xl shadow-2xl flex items-center justify-center border border-white/20"
+                  >
+                    <Check className="w-10 h-10 text-green-500" />
+                  </motion.div>
                 </div>
               </motion.div>
             </div>
@@ -205,30 +208,30 @@ export default function Home() {
       </section>
 
       {/* Stats Section with Animated Counters */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-24 bg-background border-y border-border/50">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             {[
-              { number: "150,000", label: "Active Jobs", icon: "📊" },
-              { number: "75,000", label: "Companies", icon: "🏢" },
-              { number: "2,000,000", label: "Job Seekers", icon: "👥" },
-              { number: "95,000", label: "Success Stories", icon: "🌟" }
+              { number: "150,000", label: "Active Jobs", icon: BarChart3 },
+              { number: "75,000", label: "Companies", icon: Building2 },
+              { number: "2,000,000", label: "Job Seekers", icon: Users },
+              { number: "95,000", label: "Success Stories", icon: Star }
             ].map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
-                className="relative group"
+                transition={{ delay: index * 0.1 }}
+                className="text-center group"
               >
-                <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-gray-100">
-                  <div className="text-4xl mb-4">{stat.icon}</div>
-                  <h3 className="text-4xl font-bold text-blue-600 mb-2">
-                    <AnimatedCounter value={stat.number} />+
-                  </h3>
-                  <p className="text-gray-600 text-lg">{stat.label}</p>
+                <div className="mb-6 inline-flex p-4 rounded-2xl bg-secondary/50 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300 transform group-hover:scale-110">
+                  <stat.icon className="w-8 h-8" />
                 </div>
+                <h3 className="text-5xl font-black text-foreground mb-2 tracking-tighter">
+                  <AnimatedCounter value={stat.number} />+
+                </h3>
+                <p className="text-muted-foreground text-lg font-medium tracking-wide uppercase text-sm">{stat.label}</p>
               </motion.div>
             ))}
           </div>
@@ -236,138 +239,147 @@ export default function Home() {
       </section>
 
       {/* ATS Scanner Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row-reverse items-center gap-16">
-            <motion.div 
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-muted/30" />
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="flex flex-col lg:flex-row-reverse items-center gap-20">
+            <motion.div
               className="flex-1"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl font-bold mb-6">
-                AI-Powered ATS Scanner
-                <span className="block text-blue-600 mt-2">Optimize Your Resume</span>
+              <h2 className="text-4xl lg:text-6xl font-black mb-8 tracking-tighter">
+                AI-Powered
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60 mt-2">ATS Scanner</span>
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
-                Ensure your resume gets past Applicant Tracking Systems with our advanced AI scanner. Get instant feedback and optimization suggestions.
+              <p className="text-xl text-muted-foreground mb-12 font-light leading-relaxed">
+                Beat the bots with our advanced Applicant Tracking System scanner. Get instant, actionable feedback to optimize your resume for success.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
                 {[
                   {
-                    icon: "🎯",
+                    icon: Target,
                     title: "Keyword Analysis",
-                    description: "Match your resume with job requirements"
+                    description: "Smart matching with job descriptions"
                   },
                   {
-                    icon: "📈",
+                    icon: TrendingUp,
                     title: "Score Tracking",
-                    description: "Get detailed performance metrics"
+                    description: "Monitor your improvement over time"
                   },
                   {
-                    icon: "💡",
+                    icon: Lightbulb,
                     title: "Smart Suggestions",
-                    description: "Receive AI-powered improvements"
+                    description: "AI-driven optimization tips"
                   },
                   {
-                    icon: "⚡",
+                    icon: Zap,
                     title: "Instant Results",
-                    description: "See feedback in real-time"
+                    description: "Real-time feedback engine"
                   }
                 ].map((feature, index) => (
-                  <div key={index} className="bg-white p-6 rounded-xl shadow-lg">
-                    <span className="text-3xl mb-4 block">{feature.icon}</span>
-                    <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                  <div key={index} className="flex gap-4 items-start group">
+                    <div className="w-12 h-12 rounded-2xl bg-background border border-border flex items-center justify-center group-hover:border-primary/50 group-hover:shadow-lg transition-all duration-300">
+                      <feature.icon className="w-6 h-6 text-primary" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-lg mb-1">{feature.title}</h3>
+                      <p className="text-muted-foreground text-sm">{feature.description}</p>
+                    </div>
                   </div>
                 ))}
               </div>
+
               <Link href="/scanner">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
-                >
-                  Scan Your Resume
-                </motion.button>
+                <Button size="lg" className="px-10 py-6 text-lg rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
+                  Scan Your Resume Free
+                </Button>
               </Link>
             </motion.div>
-            
+
             {/* Updated ATS Scanner Preview */}
-            <motion.div 
-              className="flex-1"
+            <motion.div
+              className="flex-1 w-full"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-                <div className="space-y-8">
-                  {/* Scanner Header */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-xl">🔍</span>
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-r from-primary/20 to-primary/5 rounded-[2.5rem] blur-2xl opacity-50" />
+                <Card className="relative p-8 rounded-[2rem] border-white/10 bg-card/80 backdrop-blur-xl shadow-2xl">
+                  <CardContent className="p-0">
+                    <div className="space-y-8">
+                      {/* Scanner Header */}
+                      <div className="flex items-center justify-between border-b border-border/50 pb-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-14 h-14 bg-primary/5 rounded-2xl flex items-center justify-center border border-primary/10">
+                            <Search className="w-7 h-7 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-bold text-xl">ATS Analysis</div>
+                            <div className="text-sm text-muted-foreground">Resume_Final_v2.pdf</div>
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end">
+                          <div className="text-4xl font-black text-primary">92</div>
+                          <div className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Score</div>
+                        </div>
                       </div>
-                      <div className="font-semibold text-gray-800">ATS Score Analysis</div>
+
+                      {/* Score Bars */}
+                      <div className="space-y-6">
+                        {[
+                          { label: "Keywords Match", score: 95 },
+                          { label: "Format Optimization", score: 88 },
+                          { label: "Content Quality", score: 92 }
+                        ].map((item, i) => (
+                          <div key={i}>
+                            <div className="flex justify-between mb-2">
+                              <span className="font-medium">{item.label}</span>
+                              <span className="font-bold text-primary">{item.score}%</span>
+                            </div>
+                            <div className="h-3 bg-secondary rounded-full overflow-hidden">
+                              <motion.div
+                                className="h-full bg-primary rounded-full"
+                                initial={{ width: 0 }}
+                                whileInView={{ width: `${item.score}%` }}
+                                transition={{ duration: 1, delay: 0.5 }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Suggestions */}
+                      <div className="grid grid-cols-2 gap-4 pt-4">
+                        <div className="bg-green-500/5 border border-green-500/20 p-4 rounded-2xl">
+                          <div className="flex items-center gap-2 mb-2 text-green-600 font-bold">
+                            <Check className="w-4 h-4" />
+                            <span>Strong Points</span>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="h-2 bg-green-500/10 rounded w-full"></div>
+                            <div className="h-2 bg-green-500/10 rounded w-3/4"></div>
+                          </div>
+                        </div>
+                        <div className="bg-yellow-500/5 border border-yellow-500/20 p-4 rounded-2xl">
+                          <div className="flex items-center gap-2 mb-2 text-yellow-600 font-bold">
+                            <AlertTriangle className="w-4 h-4" />
+                            <span>Improvements</span>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="h-2 bg-yellow-500/10 rounded w-full"></div>
+                            <div className="h-2 bg-yellow-500/10 rounded w-3/4"></div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
-                      92
-                    </div>
-                  </div>
-                  {/* Score Bars */}
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm text-gray-600">Keywords Match</span>
-                        <span className="text-sm font-medium text-blue-600">95%</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full">
-                        <div className="h-2 bg-green-400 rounded-full" style={{width: "95%"}}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm text-gray-600">Format Optimization</span>
-                        <span className="text-sm font-medium text-blue-600">88%</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full">
-                        <div className="h-2 bg-yellow-400 rounded-full" style={{width: "88%"}}></div>
-                      </div>
-                    </div>
-                    <div>
-                      <div className="flex justify-between mb-1">
-                        <span className="text-sm text-gray-600">Content Quality</span>
-                        <span className="text-sm font-medium text-blue-600">92%</span>
-                      </div>
-                      <div className="h-2 bg-gray-100 rounded-full">
-                        <div className="h-2 bg-blue-400 rounded-full" style={{width: "92%"}}></div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* Suggestions */}
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-gray-50 p-4 rounded-xl">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-green-500">✓</span>
-                        <span className="text-sm font-medium">Strong Points</span>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="h-2 bg-green-100 rounded w-full"></div>
-                        <div className="h-2 bg-green-100 rounded w-4/5"></div>
-                      </div>
-                    </div>
-                    <div className="bg-gray-50 p-4 rounded-xl">
-                      <div className="flex items-center gap-2 mb-2">
-                        <span className="text-yellow-500">!</span>
-                        <span className="text-sm font-medium">Suggestions</span>
-                      </div>
-                      <div className="space-y-1">
-                        <div className="h-2 bg-yellow-100 rounded w-full"></div>
-                        <div className="h-2 bg-yellow-100 rounded w-4/5"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </motion.div>
           </div>
@@ -375,25 +387,25 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us Section */}
-      <section id="features" className="py-20 bg-gradient-to-b from-white to-gray-50">
+      <section id="features" className="py-32 bg-background">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <motion.h2 
-              className="text-4xl font-bold mb-4"
+          <div className="text-center mb-20">
+            <motion.h2
+              className="text-4xl lg:text-6xl font-black mb-6 tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               Why Choose Us
             </motion.h2>
-            <motion.p 
-              className="text-xl text-gray-600 max-w-3xl mx-auto"
+            <motion.p
+              className="text-xl text-muted-foreground max-w-3xl mx-auto font-light"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
             >
-              Empowering your career journey with cutting-edge technology
+              Empowering your career journey with cutting-edge technology and human-centric design.
             </motion.p>
           </div>
 
@@ -402,45 +414,47 @@ export default function Home() {
               {
                 title: "AI-Powered Matching",
                 description: "Smart algorithms that connect the right talent with the right opportunities",
-                icon: "🎯",
+                icon: Target,
                 stats: "95% Match Rate"
               },
               {
                 title: "Real-time Analytics",
                 description: "Detailed insights and tracking for your job search progress",
-                icon: "📊",
+                icon: BarChart3,
                 stats: "24/7 Monitoring"
               },
               {
                 title: "Smart Learning",
                 description: "Personalized skill development recommendations",
-                icon: "🧠",
+                icon: Brain,
                 stats: "500+ Courses"
               },
               {
                 title: "Global Network",
                 description: "Connect with professionals and companies worldwide",
-                icon: "🌍",
+                icon: Globe,
                 stats: "150+ Countries"
               }
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: index * 0.2 }}
+                transition={{ delay: index * 0.1 }}
                 className="group relative"
               >
-                <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 hover:shadow-2xl transition-all h-full">
-                  <div className="absolute -top-4 right-8 bg-blue-600 text-white text-sm font-medium px-4 py-1 rounded-full">
+                <div className="h-full p-8 rounded-[2rem] bg-secondary/20 border border-border hover:border-primary/50 hover:bg-secondary/40 transition-all duration-500 hover:-translate-y-2">
+                  <div className="absolute -top-4 right-8 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg">
                     {feature.stats}
                   </div>
-                  <div className="text-4xl mb-6 group-hover:scale-110 transition-transform flex justify-center">
-                    {feature.icon}
+                  <div className="mb-8 flex justify-center">
+                    <div className="w-20 h-20 bg-background rounded-2xl flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-500 border border-border">
+                      <feature.icon className="w-10 h-10 text-primary" />
+                    </div>
                   </div>
                   <h3 className="text-xl font-bold mb-4 text-center">{feature.title}</h3>
-                  <p className="text-gray-600 text-center">{feature.description}</p>
+                  <p className="text-muted-foreground text-center leading-relaxed text-sm">{feature.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -449,19 +463,19 @@ export default function Home() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20">
+      <section id="how-it-works" className="py-32 bg-muted/30 relative">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <motion.h2 
-              className="text-4xl font-bold mb-4"
+          <div className="text-center mb-20">
+            <motion.h2
+              className="text-4xl lg:text-6xl font-black mb-6 tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               Your Journey to Success
             </motion.h2>
-            <motion.p 
-              className="text-xl text-gray-600 max-w-3xl mx-auto"
+            <motion.p
+              className="text-xl text-muted-foreground max-w-3xl mx-auto font-light"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -471,51 +485,53 @@ export default function Home() {
             </motion.p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 relative">
             {[
               {
                 step: "01",
                 title: "Create Your Profile",
                 description: "Build your professional identity with our AI-powered profile builder",
-                icon: "👤",
-                color: "blue"
+                icon: User,
+                color: "primary"
               },
               {
                 step: "02",
                 title: "Set Your Goals",
                 description: "Define your career objectives and get a personalized roadmap",
-                icon: "🎯",
-                color: "purple"
+                icon: Target,
+                color: "primary"
               },
               {
                 step: "03",
                 title: "Connect & Grow",
                 description: "Match with opportunities and mentors aligned with your goals",
-                icon: "🚀",
-                color: "green"
+                icon: Rocket,
+                color: "primary"
               }
             ].map((step, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.2 }}
                 className="relative"
               >
-                <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 hover:shadow-2xl transition-all">
-                  <div className={`absolute -top-4 left-8 bg-${step.color}-600 text-white font-bold px-4 py-2 rounded-xl text-lg`}>
+                <div className="p-10 rounded-[2.5rem] bg-background border border-border hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 relative z-10">
+                  <div className="absolute -top-6 left-10 bg-primary text-primary-foreground font-black px-5 py-3 rounded-2xl text-xl shadow-xl border-4 border-muted">
                     {step.step}
                   </div>
-                  <div className="text-5xl mb-6 flex justify-center mt-4">
-                    {step.icon}
+                  <div className="mb-8 mt-4 flex justify-center">
+                    <div className="w-24 h-24 bg-secondary/50 rounded-full flex items-center justify-center border border-border">
+                      <step.icon className="w-10 h-10 text-primary" />
+                    </div>
                   </div>
                   <h3 className="text-2xl font-bold mb-4 text-center">{step.title}</h3>
-                  <p className="text-gray-600 text-center">{step.description}</p>
+                  <p className="text-muted-foreground text-center leading-relaxed">{step.description}</p>
                 </div>
                 {index < 2 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 w-8 h-8 text-blue-600 transform translate-x-full">
-                    →
+                  <div className="hidden lg:flex absolute top-1/2 -right-6 w-12 h-12 text-muted-foreground/20 transform translate-x-1/2 -translate-y-1/2 z-0">
+                    <ArrowRight className="w-12 h-12" />
                   </div>
                 )}
               </motion.div>
@@ -525,174 +541,137 @@ export default function Home() {
       </section>
 
       {/* AI-Powered Mentorship Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50">
+      <section className="py-32 bg-background overflow-hidden">
         <div className="container mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-16">
-            <motion.div 
+          <div className="flex flex-col lg:flex-row items-center gap-20">
+            <motion.div
               className="flex-1"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              <h2 className="text-4xl font-bold mb-6">
-                AI-Powered Mentorship
-                <span className="block text-blue-600 mt-2">& Goal Tracking</span>
+              <h2 className="text-4xl lg:text-6xl font-black mb-8 tracking-tighter">
+                AI-Powered
+                <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60 mt-2">Mentorship</span>
               </h2>
-              <p className="text-xl text-gray-600 mb-8">
+              <p className="text-xl text-muted-foreground mb-10 font-light leading-relaxed">
                 Get personalized career guidance and track your professional growth with our intelligent mentorship system.
               </p>
-              
+
               {/* Feature Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
                 {[
                   {
-                    icon: "🎯",
+                    icon: Target,
                     title: "Smart Goal Setting",
                     description: "AI helps set achievable career milestones"
                   },
                   {
-                    icon: "🤖",
+                    icon: Bot,
                     title: "AI Mentor Match",
                     description: "Connect with mentors based on your goals"
                   },
                   {
-                    icon: "📈",
+                    icon: TrendingUp,
                     title: "Progress Analytics",
                     description: "Track your growth with detailed insights"
                   },
                   {
-                    icon: "🎓",
+                    icon: GraduationCap,
                     title: "Learning Paths",
                     description: "Customized skill development roadmaps"
                   }
                 ].map((feature, index) => (
-                  <div key={index} className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all">
-                    <span className="text-3xl mb-4 block">{feature.icon}</span>
-                    <h3 className="font-semibold text-lg mb-2">{feature.title}</h3>
-                    <p className="text-gray-600">{feature.description}</p>
+                  <div key={index} className="p-6 rounded-2xl bg-secondary/20 border border-border hover:bg-secondary/40 transition-colors">
+                    <div className="mb-4">
+                      <feature.icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="font-bold text-lg mb-2">{feature.title}</h3>
+                    <p className="text-muted-foreground text-sm">{feature.description}</p>
                   </div>
                 ))}
               </div>
-              
+
               <Link href="/auth/UserAuth">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold text-lg shadow-lg shadow-blue-500/20 hover:shadow-xl hover:shadow-blue-500/30 transition-all"
-                >
+                <Button size="lg" className="px-10 py-6 text-lg rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all">
                   Start Your Journey
-                </motion.button>
+                </Button>
               </Link>
             </motion.div>
 
             {/* Interactive Mentorship Dashboard Preview */}
-            <motion.div 
-              className="flex-1"
+            <motion.div
+              className="flex-1 w-full"
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="bg-white p-8 rounded-3xl shadow-xl border border-gray-100">
-                <div className="space-y-8">
-                  {/* Dashboard Header */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span className="text-2xl">👨‍🏫</span>
+              <div className="relative">
+                <div className="absolute -inset-4 bg-gradient-to-l from-primary/20 to-primary/5 rounded-[2.5rem] blur-2xl opacity-50" />
+                <Card className="relative p-8 rounded-[2rem] border-white/10 bg-card/80 backdrop-blur-xl shadow-2xl">
+                  <CardContent className="p-0">
+                    <div className="space-y-8">
+                      {/* Dashboard Header */}
+                      <div className="flex items-center justify-between border-b border-border/50 pb-6">
+                        <div className="flex items-center gap-4">
+                          <div className="w-14 h-14 bg-secondary rounded-full flex items-center justify-center border border-border">
+                            <User className="w-7 h-7 text-primary" />
+                          </div>
+                          <div>
+                            <div className="font-bold text-lg">Your AI Mentor</div>
+                            <div className="text-sm text-muted-foreground flex items-center gap-2">
+                              <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                              Online Now
+                            </div>
+                          </div>
+                        </div>
+                        <div className="bg-primary/10 px-4 py-1.5 rounded-full text-primary text-sm font-bold">
+                          Active Session
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-semibold text-gray-800">Your AI Mentor</div>
-                        <div className="text-sm text-gray-500">Available 24/7</div>
-                      </div>
-                    </div>
-                    <div className="bg-green-100 px-4 py-1 rounded-full text-green-600 text-sm font-medium">
-                      Active Session
-                    </div>
-                  </div>
 
-                  {/* Goal Progress */}
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <h4 className="font-semibold">Current Goals</h4>
-                      <span className="text-blue-600 text-sm">3/5 Completed</span>
-                    </div>
-                    <div className="space-y-3">
-                      <div className="bg-gray-50 p-4 rounded-xl">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium">Learn React Advanced</span>
-                          <span className="text-green-600">85%</span>
+                      {/* Goal Progress */}
+                      <div className="space-y-6">
+                        <div className="flex justify-between items-center">
+                          <h4 className="font-bold text-lg">Current Goals</h4>
+                          <span className="text-primary text-sm font-medium bg-primary/5 px-3 py-1 rounded-full">3/5 Completed</span>
                         </div>
-                        <div className="h-2 bg-gray-200 rounded-full">
-                          <div className="h-2 bg-green-400 rounded-full" style={{width: "85%"}}></div>
+                        <div className="space-y-4">
+                          <div className="bg-secondary/30 p-5 rounded-2xl border border-border">
+                            <div className="flex items-center justify-between mb-3">
+                              <span className="font-bold">Learn React Advanced</span>
+                              <span className="text-primary font-bold">85%</span>
+                            </div>
+                            <div className="h-2.5 bg-background rounded-full overflow-hidden">
+                              <div className="h-full bg-primary rounded-full" style={{ width: "85%" }}></div>
+                            </div>
+                          </div>
+                          <div className="bg-secondary/30 p-5 rounded-2xl border border-border">
+                            <div className="flex items-center justify-between mb-3">
+                              <span className="font-bold">System Design</span>
+                              <span className="text-primary font-bold">60%</span>
+                            </div>
+                            <div className="h-2.5 bg-background rounded-full overflow-hidden">
+                              <div className="h-full bg-primary rounded-full" style={{ width: "60%" }}></div>
+                            </div>
+                          </div>
                         </div>
                       </div>
-                      <div className="bg-gray-50 p-4 rounded-xl">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="font-medium">System Design</span>
-                          <span className="text-blue-600">60%</span>
-                        </div>
-                        <div className="h-2 bg-gray-200 rounded-full">
-                          <div className="h-2 bg-blue-400 rounded-full" style={{width: "60%"}}></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  {/* Upcoming Goals */}
-                  <div>
-                    <h4 className="font-semibold mb-4">Upcoming Goals</h4>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl">
-                        <div className="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
-                          <span>🎯</span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium">Master Cloud Architecture</div>
-                          <div className="text-sm text-gray-500">Starting Next Week</div>
-                        </div>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          className="px-4 py-2 bg-purple-100 text-purple-600 rounded-lg text-sm font-medium"
-                        >
-                          Start
-                        </motion.button>
-                      </div>
-                      <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-xl">
-                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
-                          <span>📚</span>
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium">DevOps Fundamentals</div>
-                          <div className="text-sm text-gray-500">Planned for Q2</div>
-                        </div>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          className="px-4 py-2 bg-blue-100 text-blue-600 rounded-lg text-sm font-medium"
-                        >
-                          Plan
-                        </motion.button>
+                      {/* Quick Actions */}
+                      <div className="flex gap-4 pt-2">
+                        <Button className="flex-1 py-6 rounded-xl text-base font-bold shadow-lg shadow-primary/10">
+                          Schedule Session
+                        </Button>
+                        <Button variant="outline" className="flex-1 py-6 rounded-xl text-base font-bold border-2">
+                          View Roadmap
+                        </Button>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Quick Actions */}
-                  <div className="flex gap-4">
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex-1 py-3 bg-blue-600 text-white rounded-xl font-medium"
-                    >
-                      Schedule Session
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium"
-                    >
-                      View Roadmap
-                    </motion.button>
-                  </div>
-                </div>
+                  </CardContent>
+                </Card>
               </div>
             </motion.div>
           </div>
@@ -700,19 +679,19 @@ export default function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-32 bg-muted/30">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <motion.h2 
-              className="text-4xl font-bold mb-4"
+          <div className="text-center mb-20">
+            <motion.h2
+              className="text-4xl lg:text-6xl font-black mb-6 tracking-tighter"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
               Success Stories
             </motion.h2>
-            <motion.p 
-              className="text-xl text-gray-600 max-w-3xl mx-auto"
+            <motion.p
+              className="text-xl text-muted-foreground max-w-3xl mx-auto font-light"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -751,17 +730,24 @@ export default function Home() {
                 transition={{ delay: index * 0.2 }}
                 className="group"
               >
-                <div className="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl transition-all">
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold text-xl">
-                      {testimonial.name.charAt(0)}
-                    </div>
+                <div className="p-10 rounded-[2rem] bg-background border border-border hover:shadow-2xl transition-all duration-300 h-full flex flex-col">
+                  <div className="flex items-center gap-4 mb-8">
+                    <Avatar className="w-16 h-16 border-2 border-primary/10">
+                      <AvatarFallback className="text-xl font-bold bg-secondary text-primary">
+                        {testimonial.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
                     <div>
-                      <h4 className="font-semibold text-lg">{testimonial.name}</h4>
-                      <p className="text-gray-600">{testimonial.role}</p>
+                      <h4 className="font-bold text-lg">{testimonial.name}</h4>
+                      <p className="text-sm text-muted-foreground font-medium">{testimonial.role}</p>
                     </div>
                   </div>
-                  <blockquote className="text-gray-600 italic">&ldquo;{testimonial.quote}&rdquo;</blockquote>
+                  <blockquote className="text-muted-foreground text-lg leading-relaxed flex-1">"{testimonial.quote}"</blockquote>
+                  <div className="mt-6 flex gap-1">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Star key={star} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}
@@ -770,9 +756,10 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-blue-600 relative overflow-hidden">
+      <section className="py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-primary" />
         <motion.div
-          className="absolute inset-0 opacity-10"
+          className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: 'radial-gradient(circle at 50% 50%, white 0%, transparent 70%)',
           }}
@@ -786,77 +773,77 @@ export default function Home() {
             ease: "linear"
           }}
         />
-        
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <motion.h2 
-              className="text-4xl font-bold mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              Ready to Start Your Journey?
-            </motion.h2>
-            <motion.p 
-              className="text-xl mb-12 opacity-90"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              Join thousands of professionals who have already found their dream jobs through our platform
-            </motion.p>
-            <Link href="/auth/UserAuth">
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="px-8 py-4 bg-white text-blue-600 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all"
-              >
-                Get Started Now
-              </motion.button>
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <motion.h2
+            className="text-5xl lg:text-7xl font-black text-primary-foreground mb-8 tracking-tighter"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Ready to Start Your Journey?
+          </motion.h2>
+          <motion.p
+            className="text-2xl text-primary-foreground/80 mb-12 max-w-2xl mx-auto font-light"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            Join thousands of professionals who have already found their dream careers with Arbeit.
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <Link href="/auth">
+              <Button size="lg" variant="secondary" className="px-12 py-8 text-xl rounded-2xl shadow-2xl hover:scale-105 transition-transform duration-300 font-bold">
+                Get Started Now <ArrowRight className="ml-2 w-6 h-6" />
+              </Button>
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-50 py-12">
+      <footer className="bg-muted py-12">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div>
               <h4 className="text-lg font-semibold mb-4">Company</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">About Us</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Careers</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Contact</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">About Us</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Careers</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Contact</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Resources</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Blog</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Guides</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">FAQ</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Blog</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Guides</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">FAQ</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Legal</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Privacy</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Terms</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Security</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Privacy</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Terms</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Security</Link></li>
               </ul>
             </div>
             <div>
               <h4 className="text-lg font-semibold mb-4">Connect</h4>
               <ul className="space-y-2">
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Twitter</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">LinkedIn</Link></li>
-                <li><Link href="#" className="text-gray-600 hover:text-blue-600">Facebook</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Twitter</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">LinkedIn</Link></li>
+                <li><Link href="#" className="text-muted-foreground hover:text-primary">Facebook</Link></li>
               </ul>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600">
+          <div className="mt-12 pt-8 border-t border-border text-center text-muted-foreground">
             <p>&copy; 2024 Arbeit. All rights reserved.</p>
           </div>
         </div>

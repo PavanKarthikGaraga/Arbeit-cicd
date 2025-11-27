@@ -15,7 +15,7 @@
 .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #0066FF;
+  color: var(--primary);
   margin-bottom: 2rem;
 }
 
@@ -36,12 +36,12 @@
 
 .sidebar nav li:hover {
   background: #f3f4f6;
-  color: #0066FF;
+  color: var(--primary);
 }
 
 .sidebar nav li.active {
   background: #e0f0ff;
-  color: #0066FF;
+  color: var(--primary);
   font-weight: 500;
 }
 
@@ -56,14 +56,14 @@
 }
 
 .pro-btn {
-  background: #0066FF;
+  background: var(--primary);
   color: white;
   margin-bottom: 1rem;
 }
 
 .support-btn {
   background: #e0f0ff;
-  color: #0066FF;
+  color: var(--primary);
 }
 
 .main-content {
@@ -123,12 +123,12 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #0066FF;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.1);
 }
 
 .save-btn {
-  background: #0066FF;
+  background: var(--primary);
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -139,7 +139,8 @@
 }
 
 .save-btn:hover {
-  background: #0052cc;
+  background: var(--primary);
+  opacity: 0.9;
 }
 
 /* Applications Section Styles */
@@ -223,8 +224,8 @@
 }
 
 .resume-upload:hover {
-  border-color: #0066FF;
-  background: rgba(0, 102, 255, 0.05);
+  border-color: var(--primary);
+  background: rgba(24, 24, 27, 0.05);
 }
 
 .upload-area {
@@ -233,7 +234,7 @@
 
 .upload-area i {
   font-size: 2rem;
-  color: #0066FF;
+  color: var(--primary);
   margin-bottom: 1rem;
 }
 
@@ -296,7 +297,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid #0066FF;
+  border-top: 3px solid var(--primary);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 2rem auto;
@@ -325,7 +326,7 @@
 }
 
 .login-btn {
-  background: #0066FF;
+  background: var(--primary);
   color: white;
   padding: 0.75rem 1.5rem;
   border: none;
@@ -336,7 +337,8 @@
 }
 
 .login-btn:hover {
-  background: #0052cc;
+  background: var(--primary);
+  opacity: 0.9;
 }
 
 /* Form Grid Layout */
@@ -385,7 +387,7 @@
 
 .add-skill-btn {
   padding: 0.75rem 1.5rem;
-  background: #0066FF;
+  background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
@@ -394,7 +396,8 @@
 }
 
 .add-skill-btn:hover {
-  background: #0052cc;
+  background: var(--primary);
+  opacity: 0.9;
 }
 
 .skills-list {
@@ -455,8 +458,8 @@ select {
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: #0066FF;
-  box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.1);
 }
 
 /* Section Headers */
@@ -529,7 +532,7 @@ section h3 {
 .auth-content .logo {
   font-size: 2rem;
   font-weight: bold;
-  color: #0066FF;
+  color: var(--primary);
   margin-bottom: 2rem;
 }
 
@@ -565,7 +568,7 @@ section h3 {
 
 .feature i {
   font-size: 2rem;
-  color: #0066FF;
+  color: var(--primary);
   margin-bottom: 1rem;
 }
 
@@ -582,7 +585,7 @@ section h3 {
 }
 
 .login-btn {
-  background: #0066FF;
+  background: var(--primary);
   color: white;
   padding: 1rem 2rem;
   border: none;
@@ -594,7 +597,8 @@ section h3 {
 }
 
 .login-btn:hover {
-  background: #0052cc;
+  background: var(--primary);
+  opacity: 0.9;
   transform: translateY(-2px);
 }
 

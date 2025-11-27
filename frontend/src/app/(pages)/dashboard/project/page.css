@@ -1,13 +1,13 @@
 .dark-theme {
-  --bg-primary: #0F0F0F;
-  --bg-secondary: #1A1A1A;
-  --text-primary: #FFFFFF;
-  --text-secondary: #A0A0A0;
-  --accent-color: #0066ff;
-  --error-color: #ff4444;
-  --border-color: #2A2A2A;
-  --card-bg: #1A1A1A;
-  --hover-bg: #252525;
+  --bg-primary: var(--background);
+  --bg-secondary: var(--muted);
+  --text-primary: var(--foreground);
+  --text-secondary: var(--muted-foreground);
+  --accent-color: var(--primary);
+  --error-color: var(--destructive);
+  --border-color: var(--border);
+  --card-bg: var(--card);
+  --hover-bg: var(--accent);
 }
 
 .dashboard-layout {
@@ -348,7 +348,7 @@
 }
 
 .secondary-btn:hover {
-  background: rgba(0, 102, 255, 0.1);
+  background: var(--muted);
 }
 
 .arrow-icon {

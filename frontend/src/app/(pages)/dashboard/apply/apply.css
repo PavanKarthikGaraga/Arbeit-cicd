@@ -2,16 +2,17 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
-  background: #f8fafc;
+  background: var(--background);
   min-height: 100vh;
 }
 
 .apply-header {
-  background: white;
+  background: var(--card);
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
+  border: 1px solid var(--border);
 }
 
 .job-overview {
@@ -24,12 +25,12 @@
   width: 64px;
   height: 64px;
   border-radius: 0.5rem;
-  background: #f3f4f6;
+  background: var(--muted);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
-  color: #3b82f6;
+  color: var(--primary);
   flex-shrink: 0;
 }
 
@@ -43,20 +44,20 @@
 .job-title-section h1 {
   font-size: 1.5rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--foreground);
   margin: 0 0 0.5rem 0;
 }
 
 .company-name {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: var(--muted-foreground);
   margin-bottom: 0.5rem;
 }
 
 .job-id {
   font-family: monospace;
   font-size: 0.875rem;
-  color: #3b82f6;
+  color: var(--primary);
   font-weight: 600;
 }
 
@@ -70,7 +71,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  color: #4b5563;
+  color: var(--muted-foreground);
   font-size: 0.875rem;
 }
 
@@ -85,10 +86,11 @@
 }
 
 .job-details {
-  background: white;
+  background: var(--card);
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
 }
 
 .detail-section {
@@ -102,12 +104,12 @@
 .detail-section h2 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--foreground);
   margin: 0 0 1rem 0;
 }
 
 .detail-section p {
-  color: #4b5563;
+  color: var(--muted-foreground);
   line-height: 1.6;
   margin: 0;
 }
@@ -121,12 +123,12 @@
 .requirements-list li, .benefits-list li {
   padding: 0.5rem 0 0.5rem 1.5rem;
   position: relative;
-  color: #4b5563;
+  color: var(--muted-foreground);
 }
 
 .requirements-list li:before, .benefits-list li:before {
   content: "•";
-  color: #3b82f6;
+  color: var(--primary);
   position: absolute;
   left: 0;
 }
@@ -137,16 +139,17 @@
 }
 
 .apply-card {
-  background: white;
+  background: var(--card);
   padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border);
 }
 
 .apply-card h2 {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #111827;
+  color: var(--foreground);
   margin: 0 0 1.5rem 0;
 }
 
@@ -165,33 +168,35 @@
 .form-group label {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #374151;
+  color: var(--foreground);
 }
 
 .form-group input, .form-group textarea {
   padding: 0.75rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   font-size: 0.875rem;
   transition: all 0.2s;
+  background: var(--background);
+  color: var(--foreground);
 }
 
 .form-group input:focus, .form-group textarea:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(24, 24, 27, 0.1);
 }
 
 .form-group input[type="file"] {
   padding: 0.5rem;
-  border: 2px dashed #e5e7eb;
-  background: #f9fafb;
+  border: 2px dashed var(--border);
+  background: var(--muted);
   cursor: pointer;
 }
 
 .submit-button {
-  background: #3b82f6;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
   padding: 0.875rem;
   border: none;
   border-radius: 0.5rem;
@@ -202,7 +207,7 @@
 }
 
 .submit-button:hover {
-  background: #2563eb;
+  opacity: 0.9;
 }
 
 .loading, .error, .not-found {
@@ -211,11 +216,11 @@
   justify-content: center;
   min-height: 100vh;
   font-size: 1rem;
-  color: #6b7280;
+  color: var(--muted-foreground);
 }
 
 .error {
-  color: #ef4444;
+  color: var(--destructive);
 }
 
 .loading {
@@ -224,7 +229,7 @@
   align-items: center;
   min-height: 400px;
   font-size: 1.125rem;
-  color: var(--text-light);
+  color: var(--muted-foreground);
 }
 
 @media (max-width: 1024px) {

@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
+import { MapPin, Briefcase, Building2, DollarSign } from 'lucide-react';
 import './apply.css';
 
 function ApplyForm() {
@@ -96,20 +97,20 @@ function ApplyForm() {
         </div>
         <div className="job-meta">
           <div className="meta-item">
-            <span className="icon">📍</span>
+            <span className="icon"><MapPin className="w-4 h-4" /></span>
             <span>{job.location}</span>
           </div>
           <div className="meta-item">
-            <span className="icon">💼</span>
+            <span className="icon"><Briefcase className="w-4 h-4" /></span>
             <span>{job.jobType}</span>
           </div>
           <div className="meta-item">
-            <span className="icon">🏢</span>
+            <span className="icon"><Building2 className="w-4 h-4" /></span>
             <span>{job.department}</span>
           </div>
           {!job.hideSalary && (
             <div className="meta-item">
-              <span className="icon">💰</span>
+              <span className="icon"><DollarSign className="w-4 h-4" /></span>
               <span>${job.salaryMin} - ${job.salaryMax}</span>
             </div>
           )}
@@ -158,27 +159,27 @@ function ApplyForm() {
                 <label htmlFor="fullName">Full Name</label>
                 <input type="text" id="fullName" name="fullName" required />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input type="email" id="email" name="email" required />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="phone">Phone</label>
                 <input type="tel" id="phone" name="phone" required />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="resume">Resume</label>
                 <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required />
               </div>
-              
+
               <div className="form-group">
                 <label htmlFor="coverLetter">Cover Letter (Optional)</label>
                 <textarea id="coverLetter" name="coverLetter" rows="4"></textarea>
               </div>
-              
+
               <button type="submit" className="submit-button">Submit Application</button>
             </form>
           </div>

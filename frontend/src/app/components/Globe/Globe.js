@@ -15,13 +15,13 @@ const BusinessNetwork = () => {
       for (let i = 0; i < 40; i++) {
         const particle = document.createElement('div');
         particle.className = 'particle';
-        
+
         const x = Math.random() * 100;
         const y = Math.random() * 100;
-        
+
         particle.style.left = `${x}%`;
         particle.style.top = `${y}%`;
-        
+
         particles.push({
           element: particle,
           x,
@@ -29,7 +29,7 @@ const BusinessNetwork = () => {
           vx: (Math.random() - 0.5) * 0.15,
           vy: (Math.random() - 0.5) * 0.15,
         });
-        
+
         containerRef.current?.appendChild(particle);
       }
       particlesRef.current = particles;
@@ -37,11 +37,11 @@ const BusinessNetwork = () => {
 
     const createCards = () => {
       const cardData = [
-        { title: 'Business', icon: '💼' },
-        { title: 'Analytics', icon: '📊' },
-        { title: 'Growth', icon: '📈' },
-        { title: 'Innovation', icon: '💡' },
-        { title: 'Network', icon: '🌐' }
+        { title: 'Business', icon: 'Briefcase' },
+        { title: 'Analytics', icon: 'BarChart' },
+        { title: 'Growth', icon: 'TrendingUp' },
+        { title: 'Innovation', icon: 'Lightbulb' },
+        { title: 'Network', icon: 'Globe' }
       ];
 
       const cards = cardData.map((data, index) => {
@@ -88,11 +88,11 @@ const BusinessNetwork = () => {
         cardsRef.current.forEach((card, i) => {
           const rect1 = card.element.getBoundingClientRect();
           const containerRect = containerRef.current?.getBoundingClientRect();
-          
+
           cardsRef.current.forEach((otherCard, j) => {
             if (i !== j) {
               const rect2 = otherCard.element.getBoundingClientRect();
-              
+
               const x1 = rect1.left - containerRect.left + rect1.width / 2;
               const y1 = rect1.top - containerRect.top + rect1.height / 2;
               const x2 = rect2.left - containerRect.left + rect2.width / 2;
@@ -101,7 +101,7 @@ const BusinessNetwork = () => {
               // Draw gradient line
               const gradient = ctx.createLinearGradient(x1, y1, x2, y2);
               gradient.addColorStop(0, 'rgba(255, 255, 255, 0.2)');
-              gradient.addColorStop(0.5, 'rgba(99, 102, 241, 0.3)');
+              gradient.addColorStop(0.5, 'rgba(161, 161, 170, 0.3)');
               gradient.addColorStop(1, 'rgba(255, 255, 255, 0.2)');
               ctx.strokeStyle = gradient;
 

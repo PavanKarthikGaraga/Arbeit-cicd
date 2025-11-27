@@ -90,12 +90,12 @@ export default function AuthPage() {
     e.preventDefault();
     setError('');
     setLoading(true);
-    
+
     try {
       const formData = new FormData(e.target);
       const formEmail = formData.get('email');
       const formPassword = formData.get('password');
-      
+
       if (!formEmail || !formPassword) {
         throw new Error('Please fill in all fields');
       }
@@ -105,7 +105,7 @@ export default function AuthPage() {
         const data = await response.json();
         throw new Error(data.error || 'Login failed');
       }
-      
+
       toast.success('Login successful!');
       router.replace('/dashboard');
     } catch (err) {
@@ -132,7 +132,7 @@ export default function AuthPage() {
       }
 
       const response = await register(email, password);
-      
+
 
       if (!response.ok) {
         const data = await response.json();
@@ -154,7 +154,7 @@ export default function AuthPage() {
       <div className="split-container">
         <div className="animated-side">
           <div className="absolute top-0 -z-10 h-full w-full bg-white">
-            <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-[rgba(173,109,244,0.5)] opacity-50 blur-[80px]"></div>
+            <div className="absolute bottom-auto left-auto right-0 top-0 h-[500px] w-[500px] -translate-x-[30%] translate-y-[20%] rounded-full bg-zinc-500/20 opacity-50 blur-[80px]"></div>
           </div>
           <div className="brand-content">
             <div className="logo">
@@ -188,15 +188,15 @@ export default function AuthPage() {
               </div>
             )}
 
-            <button 
-              className="google-auth-btn" 
+            <button
+              className="google-auth-btn"
               onClick={handleGoogleSignIn}
               disabled={loading}
             >
-              <Image 
-                src="/google.svg" 
-                alt="Google" 
-                width={20} 
+              <Image
+                src="/google.svg"
+                alt="Google"
+                width={20}
                 height={20}
                 priority
               />
@@ -208,7 +208,7 @@ export default function AuthPage() {
             </div>
 
             <div className="auth-tabs">
-              <button 
+              <button
                 className={`auth-tab ${isLogin ? 'active' : ''}`}
                 onClick={() => setIsLogin(true)}
                 type="button"
@@ -216,7 +216,7 @@ export default function AuthPage() {
               >
                 Login
               </button>
-              <button 
+              <button
                 className={`auth-tab ${!isLogin ? 'active' : ''}`}
                 onClick={() => setIsLogin(false)}
                 type="button"
@@ -265,8 +265,8 @@ export default function AuthPage() {
                         pattern="[0-9]{6}"
                         maxLength={6}
                       />
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         className="resend-code-btn"
                         onClick={() => sendVerificationCode(email)}
                         disabled={loading || countdown > 0}
@@ -324,7 +324,7 @@ export default function AuthPage() {
               {isLogin ? (
                 <>
                   Don&apos;t have an account?{' '}
-                  <button 
+                  <button
                     className="text-btn"
                     onClick={() => setIsLogin(false)}
                     type="button"
@@ -335,7 +335,7 @@ export default function AuthPage() {
               ) : (
                 <>
                   Already have an account?{' '}
-                  <button 
+                  <button
                     className="text-btn"
                     onClick={() => setIsLogin(true)}
                     type="button"
@@ -348,7 +348,7 @@ export default function AuthPage() {
           </div>
         </div>
       </div>
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 3000,

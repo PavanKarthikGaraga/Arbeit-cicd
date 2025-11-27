@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Toaster, toast } from 'react-hot-toast';
+import { UserCircle, FileText, Settings as SettingsIcon, UploadCloud } from 'lucide-react';
 import './page.css';
 
 const ProfilePage = () => {
@@ -180,7 +181,7 @@ const ProfilePage = () => {
 
   const handlePasswordChange = async (e) => {
     e.preventDefault();
-    
+
     if (userProfile.newPassword !== userProfile.confirmPassword) {
       toast.error('New passwords do not match');
       return;
@@ -249,12 +250,12 @@ const ProfilePage = () => {
 
   const handleProfileUpdate = async (e) => {
     e.preventDefault();
-    
+
     if (!user) {
       toast.error('Please log in to update your profile');
       return;
     }
-    
+
     // Remove sensitive fields
     const { email, currentPassword, newPassword, confirmPassword, ...rawProfileData } = userProfile;
 
@@ -333,17 +334,17 @@ const ProfilePage = () => {
             <p>Please log in to manage your profile, applications, and career preferences.</p>
             <div className="auth-features">
               <div className="feature">
-                <i className="fas fa-user-circle"></i>
+                <UserCircle className="w-12 h-12 mb-4 mx-auto text-primary" />
                 <h3>Complete Profile</h3>
                 <p>Showcase your skills and experience</p>
               </div>
               <div className="feature">
-                <i className="fas fa-file-alt"></i>
+                <FileText className="w-12 h-12 mb-4 mx-auto text-primary" />
                 <h3>Application Tracking</h3>
                 <p>Monitor all your job applications</p>
               </div>
               <div className="feature">
-                <i className="fas fa-cogs"></i>
+                <SettingsIcon className="w-12 h-12 mb-4 mx-auto text-primary" />
                 <h3>Skills Management</h3>
                 <p>Highlight your technical expertise</p>
               </div>
@@ -376,32 +377,32 @@ const ProfilePage = () => {
           <div className="logo">Arbeit</div>
           <nav>
             <ul>
-              <li 
-                className={activeSection === 'profile' ? 'active' : ''} 
+              <li
+                className={activeSection === 'profile' ? 'active' : ''}
                 onClick={() => setActiveSection('profile')}
               >
                 Profile
               </li>
-              <li 
-                className={activeSection === 'skills' ? 'active' : ''} 
+              <li
+                className={activeSection === 'skills' ? 'active' : ''}
                 onClick={() => setActiveSection('skills')}
               >
                 Skills & Technologies
               </li>
-              <li 
-                className={activeSection === 'applications' ? 'active' : ''} 
+              <li
+                className={activeSection === 'applications' ? 'active' : ''}
                 onClick={() => setActiveSection('applications')}
               >
                 Applications
               </li>
-              <li 
-                className={activeSection === 'resumes' ? 'active' : ''} 
+              <li
+                className={activeSection === 'resumes' ? 'active' : ''}
                 onClick={() => setActiveSection('resumes')}
               >
                 Resumes
               </li>
-              <li 
-                className={activeSection === 'password' ? 'active' : ''} 
+              <li
+                className={activeSection === 'password' ? 'active' : ''}
                 onClick={() => setActiveSection('password')}
               >
                 Change Password
@@ -566,7 +567,7 @@ const ProfilePage = () => {
             {activeSection === 'skills' && (
               <section className="skills-section">
                 <h2>Skills & Technologies</h2>
-                
+
                 {Object.entries(commonSkills).map(([category, options]) => (
                   <div key={category} className="skill-category">
                     <h3>{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
@@ -580,8 +581,8 @@ const ProfilePage = () => {
                           <option key={skill} value={skill}>{skill}</option>
                         ))}
                       </select>
-                      <button 
-                        type="button" 
+                      <button
+                        type="button"
                         onClick={() => handleSkillAdd(category)}
                         className="add-skill-btn"
                       >
@@ -592,7 +593,7 @@ const ProfilePage = () => {
                       {userProfile[category].map(skill => (
                         <span key={skill} className="skill-tag">
                           {skill}
-                          <button 
+                          <button
                             onClick={() => handleSkillRemove(category, skill)}
                             className="remove-skill"
                           >
@@ -634,7 +635,7 @@ const ProfilePage = () => {
                             </a>
                           )}
                         </div>
-                  </div>
+                      </div>
                     ))}
                   </div>
                 ) : (
@@ -650,10 +651,10 @@ const ProfilePage = () => {
                   <input type="file" id="resume" accept=".pdf" className="hidden" />
                   <label htmlFor="resume">
                     <div className="upload-area">
-                      <i className="fas fa-cloud-upload-alt"></i>
+                      <UploadCloud className="w-12 h-12 mb-2 text-muted-foreground" />
                       <p>Click to upload or drag and drop</p>
                       <span>PDF files only</span>
-                </div>
+                    </div>
                   </label>
                 </div>
                 {applications.filter(app => app.resumeId).map((app) => (
@@ -669,10 +670,10 @@ const ProfilePage = () => {
                         View
                       </a>
                       <button className="delete-btn">Delete</button>
-                </div>
-              </div>
+                    </div>
+                  </div>
                 ))}
-            </section>
+              </section>
             )}
 
             {activeSection === 'password' && (
@@ -708,17 +709,18 @@ const ProfilePage = () => {
                   </div>
                   <button type="submit" className="save-btn">Update Password</button>
                 </form>
-            </section>
+              </section>
             )}
           </div>
         </main>
       </div>
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           style: {
-            background: '#333',
-            color: '#fff',
+            background: 'var(--background)',
+            color: 'var(--foreground)',
+            border: '1px solid var(--border)',
             padding: '16px',
             borderRadius: '8px',
             fontSize: '14px'

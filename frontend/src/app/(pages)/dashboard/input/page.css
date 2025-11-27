@@ -77,8 +77,8 @@
 }
 
 .input-content {
-  width: 100%;
-  max-width: 1200px;
+  width: 85%;
+  max-width: none;
   background: white;
   border-radius: 24px;
   padding: 3rem;
@@ -112,6 +112,7 @@
   margin-bottom: 1rem;
   background: linear-gradient(135deg, #ad6df4 0%, #6366f1 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.2;
 }
@@ -172,12 +173,12 @@
 }
 
 .dropdown-trigger:hover {
-  border-color: #ad6df4;
+  border-color: var(--primary);
 }
 
 .dropdown-trigger.active {
-  border-color: #ad6df4;
-  box-shadow: 0 0 0 4px rgba(173, 109, 244, 0.1);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(24, 24, 27, 0.1);
 }
 
 .dropdown-trigger svg:last-child {
@@ -219,13 +220,13 @@
 }
 
 .skill-option:hover {
-  background: #f8f7ff;
-  color: #ad6df4;
+  background: var(--muted);
+  color: var(--primary);
 }
 
 .skill-option.active {
-  background: #ad6df4;
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
 }
 
 .selected-skills {
@@ -236,8 +237,8 @@
 }
 
 .skill-tag {
-  background: #f8f7ff;
-  color: #ad6df4;
+  background: var(--muted);
+  color: var(--primary);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -249,7 +250,7 @@
 .skill-tag button {
   background: none;
   border: none;
-  color: #ad6df4;
+  color: var(--primary);
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -263,8 +264,8 @@
 }
 
 .primary-btn {
-  background: linear-gradient(135deg, #ad6df4 0%, #6366f1 100%);
-  color: white;
+  background: var(--primary);
+  color: var(--primary-foreground);
   border: none;
   padding: 1rem 1.5rem;
   border-radius: 12px;
@@ -281,7 +282,7 @@
 
 .primary-btn:not(:disabled):hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(173, 109, 244, 0.3);
+  box-shadow: 0 8px 32px rgba(24, 24, 27, 0.3);
 }
 
 .primary-btn:disabled {

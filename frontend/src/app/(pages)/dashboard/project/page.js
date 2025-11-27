@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
+import { Clock, Package, ChevronDown } from 'lucide-react';
 function parseProjectPlan(text) {
   const sections = text.split('\n\n');
   const phases = [];
@@ -65,9 +66,9 @@ export default function ProjectPage() {
     }
 
     setProjectPlan(planData);
-    setProjectData({ 
-      title: storedTitle, 
-      description: storedDescription 
+    setProjectData({
+      title: storedTitle,
+      description: storedDescription
     });
     if (storedTasks) {
       setCompletedTasks(JSON.parse(storedTasks));
@@ -86,7 +87,7 @@ export default function ProjectPage() {
       const totalTasks = parsedPhases.reduce((acc, phase) => acc + phase.tasks.length, 0);
       const completedCount = Object.values(completedTasks).filter(Boolean).length;
       setOverallProgress(Math.round((completedCount / totalTasks) * 100));
-      
+
       // Store completed tasks in localStorage
       localStorage.setItem('completedProjectTasks', JSON.stringify(completedTasks));
     }
@@ -101,7 +102,7 @@ export default function ProjectPage() {
   };
 
   const getCompletedTasksCount = (phaseIndex) => {
-    return Object.entries(completedTasks).filter(([key, value]) => 
+    return Object.entries(completedTasks).filter(([key, value]) =>
       value && key.startsWith(`${phaseIndex}-`)
     ).length;
   };
@@ -132,7 +133,7 @@ export default function ProjectPage() {
           <h3>{projectData.title}</h3>
           <p className="project-description">{projectData.description}</p>
         </div>
-        
+
         <div className="progress-overview">
           <div className="progress-circle">
             <svg viewBox="0 0 36 36" className="circular-chart">
@@ -185,7 +186,7 @@ export default function ProjectPage() {
             <p>Track your progress and complete tasks to achieve your project goals</p>
           </div>
           <div className="header-buttons">
-            <button 
+            <button
               className="secondary-btn"
               onClick={() => {
                 localStorage.removeItem('projectPlan');
@@ -197,7 +198,7 @@ export default function ProjectPage() {
             >
               Start New Project
             </button>
-            <button 
+            <button
               className="secondary-btn"
               onClick={() => router.push('/dashboard')}
             >
@@ -208,8 +209,8 @@ export default function ProjectPage() {
 
         <div className="dashboard-grid">
           {parsedPhases.map((phase, phaseIndex) => (
-            <div 
-              key={phaseIndex} 
+            <div
+              key={phaseIndex}
               id={`phase-${phaseIndex}`}
               className="dashboard-card"
             >
@@ -219,7 +220,7 @@ export default function ProjectPage() {
                   <h3>{phase.title}</h3>
                 </div>
                 <div className="card-time">
-                  <span className="time-icon">⏱</span>
+                  <span className="time-icon"><Clock className="w-4 h-4" /></span>
                   {phase.timeEstimate}
                 </div>
               </div>
@@ -230,10 +231,10 @@ export default function ProjectPage() {
                   <span>{getCompletedTasksCount(phaseIndex)}/{phase.tasks.length} tasks</span>
                 </div>
                 <div className="progress-track">
-                  <div 
+                  <div
                     className="progress-fill"
-                    style={{ 
-                      width: `${(getCompletedTasksCount(phaseIndex) / phase.tasks.length) * 100}%` 
+                    style={{
+                      width: `${(getCompletedTasksCount(phaseIndex) / phase.tasks.length) * 100}%`
                     }}
                   ></div>
                 </div>
@@ -241,8 +242,8 @@ export default function ProjectPage() {
 
               <div className="card-preview">
                 {phase.tasks.slice(0, 2).map((task, taskIndex) => (
-                  <div 
-                    key={taskIndex} 
+                  <div
+                    key={taskIndex}
                     className={`task-row ${completedTasks[`${phaseIndex}-${taskIndex}`] ? 'completed' : ''}`}
                   >
                     <label className="task-checkbox">
@@ -258,12 +259,12 @@ export default function ProjectPage() {
                 ))}
 
                 {phase.tasks.length > 2 && (
-                  <button 
+                  <button
                     className="view-more-btn"
                     onClick={() => togglePhaseExpand(phaseIndex)}
                   >
                     {expandedPhases[phaseIndex] ? 'Show Less' : 'View All Tasks'}
-                    <span className={`arrow-icon ${expandedPhases[phaseIndex] ? 'expanded' : ''}`}>▼</span>
+                    <span className={`arrow-icon ${expandedPhases[phaseIndex] ? 'expanded' : ''}`}><ChevronDown className="w-4 h-4" /></span>
                   </button>
                 )}
 
@@ -273,8 +274,8 @@ export default function ProjectPage() {
                       <h4>All Tasks</h4>
                       <div className="tasks-list">
                         {phase.tasks.slice(2).map((task, taskIndex) => (
-                          <div 
-                            key={taskIndex + 2} 
+                          <div
+                            key={taskIndex + 2}
                             className={`task-row ${completedTasks[`${phaseIndex}-${taskIndex + 2}`] ? 'completed' : ''}`}
                           >
                             <label className="task-checkbox">
@@ -297,7 +298,7 @@ export default function ProjectPage() {
                         <div className="deliverables-list">
                           {phase.deliverables.map((deliverable, i) => (
                             <div key={i} className="deliverable-item">
-                              <span className="deliverable-icon">📦</span>
+                              <span className="deliverable-icon"><Package className="w-4 h-4" /></span>
                               {deliverable}
                             </div>
                           ))}

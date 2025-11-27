@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import './page.css';
+import { Clock, BookOpen, ChevronDown } from 'lucide-react';
 
 const commonSkills = [
   'JavaScript', 'Python', 'React', 'Node.js', 'SQL',
@@ -110,7 +111,7 @@ export default function MentorshipPage() {
       const totalTasks = parsedMilestones.reduce((acc, milestone) => acc + milestone.goals.length, 0);
       const completedCount = Object.values(completedTasks).filter(Boolean).length;
       setOverallProgress(Math.round((completedCount / totalTasks) * 100));
-      
+
       // Store completed tasks in localStorage
       localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
     }
@@ -161,11 +162,11 @@ export default function MentorshipPage() {
     } catch (err) {
       console.error('Roadmap generation error:', err);
       setError(
-        err.message === 'API configuration error' 
+        err.message === 'API configuration error'
           ? 'Service is not properly configured. Please try again later.'
           : err.message === 'Service temporarily unavailable'
-          ? 'Service is temporarily unavailable. Please try again in a few minutes.'
-          : 'Failed to generate your roadmap. Please try again.'
+            ? 'Service is temporarily unavailable. Please try again in a few minutes.'
+            : 'Failed to generate your roadmap. Please try again.'
       );
     } finally {
       setIsGenerating(false);
@@ -191,7 +192,7 @@ export default function MentorshipPage() {
   };
 
   const getCompletedTasksCount = (milestoneIndex) => {
-    return Object.entries(completedTasks).filter(([key, value]) => 
+    return Object.entries(completedTasks).filter(([key, value]) =>
       value && key.startsWith(`${milestoneIndex}-`)
     ).length;
   };
@@ -221,7 +222,7 @@ export default function MentorshipPage() {
           <h2>Your Journey to</h2>
           <h3>{formData.dreamRole}</h3>
         </div>
-        
+
         <div className="progress-overview">
           <div className="progress-circle">
             <svg viewBox="0 0 36 36" className="circular-chart">
@@ -238,7 +239,7 @@ export default function MentorshipPage() {
                   a 15.9155 15.9155 0 0 1 0 31.831
                   a 15.9155 15.9155 0 0 1 0 -31.831"
                 fill="none"
-                stroke="#0066FF"
+                stroke="currentColor"
                 strokeWidth="2"
                 strokeDasharray={`${overallProgress}, 100`}
               />
@@ -274,36 +275,36 @@ export default function MentorshipPage() {
             <p>Track your progress and complete tasks to achieve your goals</p>
           </div>
           <div className="header-buttons">
-          <button 
-            className="secondary-btn"
-            onClick={handleDownload}
-          >
-            Download Plan
-          </button>
-          <button 
-            className="secondary-btn"
-            onClick={() => {
-              localStorage.removeItem('mentorshipRoadmap');
-              localStorage.removeItem('dreamRole');
-              localStorage.removeItem('completedTasks');
-              router.push('/dashboard/input');
-            }}
-          >
-            Start Over
-          </button>
-          <button 
-            className="secondary-btn"
-            onClick={() => router.push('/dashboard')}
-          >
-            Back to Dashboard
-          </button>
+            <button
+              className="secondary-btn"
+              onClick={handleDownload}
+            >
+              Download Plan
+            </button>
+            <button
+              className="secondary-btn"
+              onClick={() => {
+                localStorage.removeItem('mentorshipRoadmap');
+                localStorage.removeItem('dreamRole');
+                localStorage.removeItem('completedTasks');
+                router.push('/dashboard/input');
+              }}
+            >
+              Start Over
+            </button>
+            <button
+              className="secondary-btn"
+              onClick={() => router.push('/dashboard')}
+            >
+              Back to Dashboard
+            </button>
           </div>
         </div>
 
         <div className="dashboard-grid">
           {parsedMilestones.map((milestone, milestoneIndex) => (
-            <div 
-              key={milestoneIndex} 
+            <div
+              key={milestoneIndex}
               id={`milestone-${milestoneIndex}`}
               className="dashboard-card"
             >
@@ -313,7 +314,7 @@ export default function MentorshipPage() {
                   <h3>{milestone.title.replace(/\*\*/g, '')}</h3>
                 </div>
                 <div className="card-time">
-                  <span className="time-icon">⏱</span>
+                  <span className="time-icon"><Clock className="w-4 h-4" /></span>
                   {milestone.timeEstimate}
                 </div>
               </div>
@@ -324,10 +325,10 @@ export default function MentorshipPage() {
                   <span>{getCompletedTasksCount(milestoneIndex)}/{milestone.goals.length} tasks</span>
                 </div>
                 <div className="progress-track">
-                  <div 
+                  <div
                     className="progress-fill"
-                    style={{ 
-                      width: `${(getCompletedTasksCount(milestoneIndex) / milestone.goals.length) * 100}%` 
+                    style={{
+                      width: `${(getCompletedTasksCount(milestoneIndex) / milestone.goals.length) * 100}%`
                     }}
                   ></div>
                 </div>
@@ -337,8 +338,8 @@ export default function MentorshipPage() {
                 {milestone.goals.slice(0, 2).map((goal, taskIndex) => {
                   const cleanGoal = goal.replace(/\*/g, '').trim();
                   return (
-                    <div 
-                      key={taskIndex} 
+                    <div
+                      key={taskIndex}
                       className={`task-row ${completedTasks[`${milestoneIndex}-${taskIndex}`] ? 'completed' : ''}`}
                     >
                       <label className="task-checkbox">
@@ -354,12 +355,12 @@ export default function MentorshipPage() {
                   );
                 })}
 
-                <button 
+                <button
                   className="view-more-btn"
                   onClick={() => toggleMilestoneExpand(milestoneIndex)}
                 >
                   {expandedMilestones[milestoneIndex] ? 'Show Less' : 'View All Tasks'}
-                  <span className={`arrow-icon ${expandedMilestones[milestoneIndex] ? 'expanded' : ''}`}>▼</span>
+                  <span className={`arrow-icon ${expandedMilestones[milestoneIndex] ? 'expanded' : ''}`}><ChevronDown className="w-4 h-4" /></span>
                 </button>
 
                 {expandedMilestones[milestoneIndex] && (
@@ -370,8 +371,8 @@ export default function MentorshipPage() {
                         {milestone.goals.slice(2).map((goal, taskIndex) => {
                           const cleanGoal = goal.replace(/\*/g, '').trim();
                           return (
-                            <div 
-                              key={taskIndex + 2} 
+                            <div
+                              key={taskIndex + 2}
                               className={`task-row ${completedTasks[`${milestoneIndex}-${taskIndex + 2}`] ? 'completed' : ''}`}
                             >
                               <label className="task-checkbox">
@@ -397,7 +398,7 @@ export default function MentorshipPage() {
                             const cleanResource = resource.replace(/\*/g, '').trim();
                             return (
                               <div key={i} className="resource-item">
-                                <span className="resource-icon">📚</span>
+                                <span className="resource-icon"><BookOpen className="w-4 h-4" /></span>
                                 {cleanResource}
                               </div>
                             );

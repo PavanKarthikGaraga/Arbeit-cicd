@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaSearch, FaUser, FaTimes } from 'react-icons/fa';
+import { Search, User, X, MapPin, Briefcase, Building2, DollarSign, Sparkles, ArrowRight } from 'lucide-react';
 import './page.css';
 
 export default function Dashboard() {
@@ -70,16 +70,16 @@ export default function Dashboard() {
     ].map(field => field.toLowerCase());
 
     const searchTerms = searchTerm.toLowerCase().split(' ');
-    const matchesSearch = searchTerms.every(term => 
+    const matchesSearch = searchTerms.every(term =>
       searchFields.some(field => field.includes(term))
     );
-    
-    const matchesDepartment = 
-      departmentFilter === 'all' || 
+
+    const matchesDepartment =
+      departmentFilter === 'all' ||
       job.department.toLowerCase() === departmentFilter.toLowerCase();
-    
-    const matchesJobType = 
-      jobTypeFilter === 'all' || 
+
+    const matchesJobType =
+      jobTypeFilter === 'all' ||
       job.jobType.toLowerCase() === jobTypeFilter.toLowerCase();
 
     const matches = matchesSearch && matchesDepartment && matchesJobType && (job.status === 'Active' || !job.status);
@@ -101,7 +101,7 @@ export default function Dashboard() {
         <div className="logo">
           <h1>Arbeit</h1>
         </div>
-        
+
         <div className="search-bar">
           <input
             type="text"
@@ -110,7 +110,7 @@ export default function Dashboard() {
             onChange={handleSearch}
           />
           <button className="search-button">
-            <FaSearch />
+            <Search className="w-5 h-5" />
           </button>
         </div>
 
@@ -120,7 +120,7 @@ export default function Dashboard() {
           <Link href="/scanner" className="nav-link">ATS Scanner</Link>
           <div className="profile-dropdown">
             <button className="profile-button">
-              <FaUser />
+              <User className="w-5 h-5" />
             </button>
             <div className="dropdown-content">
               <Link href="/dashboard/settings" className="dropdown-item">Settings</Link>
@@ -136,7 +136,7 @@ export default function Dashboard() {
           <div className="notification-content">
             <div className="notification-left">
               <div className="notification-icon">
-                <span className="sparkle">✨</span>
+                <Sparkles className="w-6 h-6 text-primary" />
               </div>
               <div className="notification-text">
                 <h2>Complete your profile</h2>
@@ -146,14 +146,14 @@ export default function Dashboard() {
             <div className="notification-actions">
               <Link href="/dashboard/settings" className="update-button">
                 Update Profile
-                <span className="arrow">→</span>
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
-              <button 
+              <button
                 className="close-notification"
                 onClick={() => setShowNotification(false)}
                 aria-label="Close notification"
               >
-                <FaTimes />
+                <X className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -211,9 +211,9 @@ export default function Dashboard() {
               </div>
             ) : (
               filteredJobs.map((job) => (
-                <Link 
+                <Link
                   href={`/dashboard/apply?jobId=${job.jobId}`}
-                  key={job.jobId} 
+                  key={job.jobId}
                   className="job-card"
                 >
                   <div className="job-card-header">
@@ -232,22 +232,22 @@ export default function Dashboard() {
                   </div>
                   <div className="job-details">
                     <div className="detail">
-                      <span className="icon">📍</span>
+                      <span className="icon"><MapPin className="w-4 h-4" /></span>
                       <span>{job.location}</span>
                     </div>
                     <div className="detail">
-                      <span className="icon">💼</span>
+                      <span className="icon"><Briefcase className="w-4 h-4" /></span>
                       <span>{job.jobType}</span>
                     </div>
                     <div className="detail">
-                      <span className="icon">🏢</span>
+                      <span className="icon"><Building2 className="w-4 h-4" /></span>
                       <span>{job.department}</span>
                     </div>
                     {!job.hideSalary && (
                       <div className="detail">
-                        <span className="icon">💰</span>
+                        <span className="icon"><DollarSign className="w-4 h-4" /></span>
                         <span>
-                          ${typeof job.salaryMin === 'number' ? job.salaryMin.toLocaleString() : '0'} - 
+                          ${typeof job.salaryMin === 'number' ? job.salaryMin.toLocaleString() : '0'} -
                           ${typeof job.salaryMax === 'number' ? job.salaryMax.toLocaleString() : '0'}
                         </span>
                       </div>

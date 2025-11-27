@@ -5,6 +5,23 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '../../../context/AuthContext';
 import LogoutButton from '@/components/LogoutButton';
 import './page.css';
+import {
+  ClipboardList,
+  Target,
+  DollarSign,
+  Users,
+  FileText,
+  Gift,
+  HelpCircle,
+  Info,
+  Eye,
+  Lock,
+  Unlock,
+  Trash2,
+  User,
+  File
+} from 'lucide-react';
+import { Toaster, toast } from 'react-hot-toast';
 
 export default function BusinessDashboard() {
   const router = useRouter();
@@ -173,7 +190,7 @@ export default function BusinessDashboard() {
         const process = name.replace('hiringProcess-', '');
         setNewJob(prev => ({
           ...prev,
-          hiringProcess: checked 
+          hiringProcess: checked
             ? [...prev.hiringProcess, process]
             : prev.hiringProcess.filter(p => p !== process)
         }));
@@ -222,7 +239,7 @@ export default function BusinessDashboard() {
       }
 
       const data = await response.json();
-      alert(`Job posted successfully! Job ID: ${data.jobId}`);
+      toast.success(`Job posted successfully! Job ID: ${data.jobId}`);
 
       // Refresh jobs list
       fetchJobs();
@@ -246,7 +263,7 @@ export default function BusinessDashboard() {
       });
     } catch (err) {
       console.error('Error creating job:', err);
-      alert('Failed to create job. Please try again.');
+      toast.error('Failed to create job. Please try again.');
     }
   };
 
@@ -268,10 +285,10 @@ export default function BusinessDashboard() {
 
       // Refresh jobs list
       fetchJobs();
-      alert('Job deleted successfully');
+      toast.success('Job deleted successfully');
     } catch (err) {
       console.error('Error deleting job:', err);
-      alert('Failed to delete job. Please try again.');
+      toast.error('Failed to delete job. Please try again.');
     }
   };
 
@@ -298,10 +315,10 @@ export default function BusinessDashboard() {
 
       // Refresh jobs list
       fetchJobs();
-      alert(`Job status updated to ${newStatus}`);
+      toast.success(`Job status updated to ${newStatus}`);
     } catch (err) {
       console.error('Error updating job status:', err);
-      alert('Failed to update job status. Please try again.');
+      toast.error('Failed to update job status. Please try again.');
     }
   };
 
@@ -322,17 +339,17 @@ export default function BusinessDashboard() {
         return false;
       }
 
-      const matchesSearch = 
+      const matchesSearch =
         job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
         job.location.toLowerCase().includes(searchTerm.toLowerCase());
 
-      const matchesStatus = 
-        statusFilter === 'all' || 
+      const matchesStatus =
+        statusFilter === 'all' ||
         job.status.toLowerCase() === statusFilter.toLowerCase();
 
-      const matchesDepartment = 
-        departmentFilter === 'all' || 
+      const matchesDepartment =
+        departmentFilter === 'all' ||
         job.department.toLowerCase() === departmentFilter.toLowerCase();
 
       return matchesSearch && matchesStatus && matchesDepartment;
@@ -387,10 +404,11 @@ export default function BusinessDashboard() {
         setSelectedApplication(prev => ({ ...prev, status }));
       }
 
-      alert(`Application status updated to ${status}`);
+
+      toast.success(`Application status updated to ${status}`);
     } catch (error) {
       console.error('Error updating application status:', error);
-      alert('Failed to update application status');
+      toast.error('Failed to update application status');
     }
   };
 
@@ -408,6 +426,7 @@ export default function BusinessDashboard() {
 
   return (
     <div className="business-page">
+      <Toaster position="top-right" />
       <header className="business-header">
         <div className="header-content">
           <div className="header-left">
@@ -434,7 +453,7 @@ export default function BusinessDashboard() {
                 </div>
                 <form onSubmit={handleSubmit} className="job-form">
                   <div className="form-section">
-                    <h3 className="form-section-title">📋 Basic Information</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><ClipboardList className="w-5 h-5" /> Basic Information</h3>
                     <div className="form-group">
                       <label htmlFor="title" className="required-field">Job Title</label>
                       <input
@@ -506,7 +525,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">🎯 Requirements & Location</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><Target className="w-5 h-5" /> Requirements & Location</h3>
                     <div className="form-group">
                       <label htmlFor="qualification" className="required-field">Qualification / Eligibility</label>
                       <input
@@ -534,7 +553,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">💰 Compensation</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><DollarSign className="w-5 h-5" /> Compensation</h3>
                     <div className="form-row">
                       <div className="form-group half">
                         <label htmlFor="salaryMin" className="required-field">Monthly Salary (Min)</label>
@@ -578,7 +597,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">🤝 Hiring Process</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><Users className="w-5 h-5" /> Hiring Process</h3>
                     <div className="form-group">
                       <label>Selection Process</label>
                       <div className="checkbox-group">
@@ -599,7 +618,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">📝 Job Details</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><FileText className="w-5 h-5" /> Job Details</h3>
                     <div className="form-group">
                       <label htmlFor="description" className="required-field">Job Description</label>
                       <textarea
@@ -651,7 +670,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">❓ Screening Questions</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><HelpCircle className="w-5 h-5" /> Screening Questions</h3>
                     <div className="screening-questions">
                       {newJob.screeningQuestions.map((question, index) => (
                         <div key={index} className="question-item">
@@ -732,7 +751,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">📝 Additional Information</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><Info className="w-5 h-5" /> Additional Information</h3>
                     <div className="form-group">
                       <label htmlFor="additionalInfo">Additional Information</label>
                       <textarea
@@ -764,7 +783,7 @@ export default function BusinessDashboard() {
                 </div>
                 <div className="job-details">
                   <div className="form-section">
-                    <h3 className="form-section-title">📋 Basic Information</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><ClipboardList className="w-5 h-5" /> Basic Information</h3>
                     <div className="details-grid">
                       <div className="detail-item">
                         <label>Job ID</label>
@@ -804,7 +823,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">💰 Compensation</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><DollarSign className="w-5 h-5" /> Compensation</h3>
                     <div className="details-grid">
                       <div className="detail-item">
                         <label>Salary Range</label>
@@ -814,7 +833,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">📝 Job Description</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><FileText className="w-5 h-5" /> Job Description</h3>
                     <div className="detail-item">
                       <p>{selectedJob.description}</p>
                     </div>
@@ -833,7 +852,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">🎁 Benefits</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><Gift className="w-5 h-5" /> Benefits</h3>
                     <ul className="detail-list">
                       {(Array.isArray(selectedJob.benefits)
                         ? selectedJob.benefits
@@ -845,7 +864,7 @@ export default function BusinessDashboard() {
                   </div>
 
                   <div className="form-section">
-                    <h3 className="form-section-title">🤝 Hiring Process</h3>
+                    <h3 className="form-section-title flex items-center gap-2"><Users className="w-5 h-5" /> Hiring Process</h3>
                     <div className="hiring-steps">
                       {(Array.isArray(selectedJob.hiringProcess)
                         ? selectedJob.hiringProcess
@@ -887,19 +906,19 @@ export default function BusinessDashboard() {
           )}
 
           <nav className="dashboard-tabs">
-            <button 
+            <button
               className={`tab ${activeTab === 'jobs' ? 'active' : ''}`}
               onClick={() => setActiveTab('jobs')}
             >
               Jobs
             </button>
-            <button 
+            <button
               className={`tab ${activeTab === 'applicants' ? 'active' : ''}`}
               onClick={() => setActiveTab('applicants')}
             >
               Applicants
             </button>
-            <button 
+            <button
               className={`tab ${activeTab === 'analytics' ? 'active' : ''}`}
               onClick={() => setActiveTab('analytics')}
             >
@@ -930,15 +949,15 @@ export default function BusinessDashboard() {
               <div className="jobs-table">
                 <div className="table-header">
                   <div className="table-search">
-                    <input 
-                      type="text" 
-                      placeholder="Search jobs..." 
+                    <input
+                      type="text"
+                      placeholder="Search jobs..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
                   </div>
                   <div className="table-filters">
-                    <select 
+                    <select
                       value={statusFilter}
                       onChange={(e) => setStatusFilter(e.target.value)}
                     >
@@ -947,7 +966,7 @@ export default function BusinessDashboard() {
                       <option value="closed">Closed</option>
                       <option value="draft">Draft</option>
                     </select>
-                    <select 
+                    <select
                       value={departmentFilter}
                       onChange={(e) => setDepartmentFilter(e.target.value)}
                     >
@@ -998,21 +1017,21 @@ export default function BusinessDashboard() {
                                 title="View Details"
                                 onClick={() => handleViewDetails(job)}
                               >
-                                👁️
+                                <Eye className="w-4 h-4" />
                               </button>
                               <button
                                 className="icon-btn"
                                 title={job.status === 'Active' ? 'Close Job' : 'Reopen Job'}
                                 onClick={() => handleStatusChange(job)}
                               >
-                                {job.status === 'Active' ? '🔒' : '🔓'}
+                                {job.status === 'Active' ? <Lock className="w-4 h-4" /> : <Unlock className="w-4 h-4" />}
                               </button>
                               <button
                                 className="icon-btn"
                                 title="Delete Job"
                                 onClick={() => handleDelete(job)}
                               >
-                                🗑️
+                                <Trash2 className="w-4 h-4" />
                               </button>
                             </div>
                           </td>
@@ -1062,7 +1081,7 @@ export default function BusinessDashboard() {
                       </div>
                     </div>
                     <div className="applicant-actions">
-                      <button 
+                      <button
                         className="action-btn view"
                         onClick={() => handleViewApplication(application)}
                       >
@@ -1079,14 +1098,14 @@ export default function BusinessDashboard() {
                 <div className="analytics-card">
                   <h3>Applications Over Time</h3>
                   <div className="chart-container">
-                    <div className="chart-placeholder" style={{ 
-                      height: '100%', 
+                    <div className="chart-placeholder" style={{
+                      height: '100%',
                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2))',
                       borderRadius: '0.5rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#3b82f6',
+                      color: '#71717a',
                       fontWeight: 500
                     }}>
                       Applications Chart
@@ -1096,14 +1115,14 @@ export default function BusinessDashboard() {
                 <div className="analytics-card">
                   <h3>Hiring Progress</h3>
                   <div className="chart-container">
-                    <div className="chart-placeholder" style={{ 
-                      height: '100%', 
+                    <div className="chart-placeholder" style={{
+                      height: '100%',
                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2))',
                       borderRadius: '0.5rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#3b82f6',
+                      color: '#71717a',
                       fontWeight: 500
                     }}>
                       Hiring Progress Chart
@@ -1113,14 +1132,14 @@ export default function BusinessDashboard() {
                 <div className="analytics-card">
                   <h3>Top Job Categories</h3>
                   <div className="chart-container">
-                    <div className="chart-placeholder" style={{ 
-                      height: '100%', 
+                    <div className="chart-placeholder" style={{
+                      height: '100%',
                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2))',
                       borderRadius: '0.5rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#3b82f6',
+                      color: '#71717a',
                       fontWeight: 500
                     }}>
                       Categories Chart
@@ -1130,14 +1149,14 @@ export default function BusinessDashboard() {
                 <div className="analytics-card">
                   <h3>Application Sources</h3>
                   <div className="chart-container">
-                    <div className="chart-placeholder" style={{ 
-                      height: '100%', 
+                    <div className="chart-placeholder" style={{
+                      height: '100%',
                       background: 'linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.2))',
                       borderRadius: '0.5rem',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#3b82f6',
+                      color: '#71717a',
                       fontWeight: 500
                     }}>
                       Sources Chart
@@ -1153,8 +1172,8 @@ export default function BusinessDashboard() {
               <div className="modal application-modal">
                 <div className="modal-header">
                   <h2>Application Details</h2>
-                  <button 
-                    className="close-btn" 
+                  <button
+                    className="close-btn"
                     onClick={() => setShowApplicationModal(false)}
                   >
                     ×
@@ -1163,7 +1182,7 @@ export default function BusinessDashboard() {
                 <div className="modal-content">
                   <div className="application-details">
                     <div className="form-section">
-                      <h3 className="form-section-title">👤 Applicant Information</h3>
+                      <h3 className="form-section-title flex items-center gap-2"><User className="w-5 h-5" /> Applicant Information</h3>
                       <div className="details-grid">
                         <div className="detail-item">
                           <label>User ID</label>
@@ -1202,7 +1221,7 @@ export default function BusinessDashboard() {
 
                     {selectedApplication.coverLetter && (
                       <div className="form-section">
-                        <h3 className="form-section-title">📝 Cover Letter</h3>
+                        <h3 className="form-section-title flex items-center gap-2"><FileText className="w-5 h-5" /> Cover Letter</h3>
                         <div className="detail-item">
                           <p>{selectedApplication.coverLetter}</p>
                         </div>
@@ -1212,19 +1231,19 @@ export default function BusinessDashboard() {
                     <div className="form-section">
                       <h3 className="form-section-title">✨ Actions</h3>
                       <div className="action-buttons">
-                        <button 
+                        <button
                           className="action-btn approve"
                           onClick={() => handleUpdateStatus(selectedApplication._id, 'Approved')}
                         >
                           Approve
                         </button>
-                        <button 
+                        <button
                           className="action-btn reject"
                           onClick={() => handleUpdateStatus(selectedApplication._id, 'Rejected')}
                         >
                           Reject
                         </button>
-                        <button 
+                        <button
                           className="action-btn schedule"
                           onClick={() => handleUpdateStatus(selectedApplication._id, 'Interview Scheduled')}
                         >
@@ -1237,7 +1256,7 @@ export default function BusinessDashboard() {
                   {selectedApplication.resumeId && (
                     <div className="resume-viewer">
                       <div className="resume-header">
-                        <h3>📄 Resume</h3>
+                        <h3 className="flex items-center gap-2"><File className="w-5 h-5" /> Resume</h3>
                       </div>
                       {resumeLoading && (
                         <div className="resume-loading">

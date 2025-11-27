@@ -67,14 +67,14 @@ export default function ScannerPage() {
 
   const handleFileUpload = async (e) => {
     const uploadedFile = e.target.files[0];
-    
+
     // Check file type
     if (uploadedFile.type !== 'application/pdf') {
       setError('Please upload a PDF file.');
       setFile(null);
       return;
     }
-    
+
     // Check file size (5MB limit)
     const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
     if (uploadedFile.size > MAX_FILE_SIZE) {
@@ -82,7 +82,7 @@ export default function ScannerPage() {
       setFile(null);
       return;
     }
-    
+
     setFile(uploadedFile);
     setError(null);
     setResult(null);
@@ -101,7 +101,7 @@ export default function ScannerPage() {
 
       // Get total number of pages
       const numPages = pdf.numPages;
-      
+
       // Extract text from each page
       for (let pageNum = 1; pageNum <= numPages; pageNum++) {
         const page = await pdf.getPage(pageNum);
@@ -182,7 +182,7 @@ export default function ScannerPage() {
       </div>
 
       <h1 className="text-3xl font-bold mb-8">ATS Resume Scanner</h1>
-      
+
       <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-8 mb-8 relative overflow-hidden border border-gray-100">
         <div className="mb-8">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">
@@ -194,7 +194,7 @@ export default function ScannerPage() {
         </div>
 
         <div className="mb-6">
-          <div className="relative border-2 border-dashed border-gray-300 rounded-xl p-8 transition-all hover:border-blue-500 group">
+          <div className="relative border-2 border-dashed border-muted-foreground/25 rounded-xl p-8 transition-all hover:border-primary group">
             <input
               type="file"
               accept="application/pdf"
@@ -203,13 +203,13 @@ export default function ScannerPage() {
             />
             <div className="text-center">
               <div className="mb-4">
-                <svg className="mx-auto h-12 w-12 text-gray-400 group-hover:text-blue-500 transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                <svg className="mx-auto h-12 w-12 text-muted-foreground group-hover:text-primary transition-colors" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
                   <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <div className="flex flex-col items-center text-center">
                 <p className="text-gray-600">
-                  <span className="font-medium text-blue-600 hover:text-blue-500">
+                  <span className="font-medium text-primary hover:text-primary/80">
                     Click to upload
                   </span>
                   {' '}or drag and drop
@@ -233,7 +233,7 @@ export default function ScannerPage() {
         <button
           onClick={analyzeResume}
           disabled={!file || loading}
-          className={`w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-3 px-4 rounded-xl font-medium
+          className={`w-full bg-primary text-primary-foreground py-3 px-4 rounded-xl font-medium
             transition-all duration-200 transform hover:translate-y-[-2px] hover:shadow-lg
             ${(!file || loading) ? 'opacity-50 cursor-not-allowed hover:translate-y-0 hover:shadow-none' : ''}`}
         >
@@ -254,14 +254,14 @@ export default function ScannerPage() {
         </button>
 
         {loading && (
-          <div className="mt-6 bg-blue-50 rounded-lg p-4">
+          <div className="mt-6 bg-secondary rounded-lg p-4">
             <div className="flex items-center justify-center space-x-3">
               <div className="flex space-x-1">
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
-                <div className="w-2 h-2 bg-blue-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+                <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
               </div>
-              <span className="text-blue-800 font-medium">{loadingStage}</span>
+              <span className="text-primary font-medium">{loadingStage}</span>
             </div>
           </div>
         )}
