@@ -742,7 +742,7 @@ export default function Home() {
                       <p className="text-sm text-muted-foreground font-medium">{testimonial.role}</p>
                     </div>
                   </div>
-                  <blockquote className="text-muted-foreground text-lg leading-relaxed flex-1">"{testimonial.quote}"</blockquote>
+                  <blockquote className="text-muted-foreground text-lg leading-relaxed flex-1">&quot;{testimonial.quote}&quot;</blockquote>
                   <div className="mt-6 flex gap-1">
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Star key={star} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
