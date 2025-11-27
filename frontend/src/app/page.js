@@ -82,7 +82,7 @@ export default function Home() {
                 >
                   Find Your{' '}
                   <span className="text-blue-600">
-                    Dream
+                    Dreamed
                   </span>
                   <br />
                   Career Today
