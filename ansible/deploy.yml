@@ -1,0 +1,13 @@
+- hosts: k8s
+  become: yes
+
+  tasks:
+    - name: Copy k8s manifests
+      copy:
+        src: ./k8s/
+        dest: /home/ubuntu/k8s/
+        mode: 0644
+
+    - name: Apply kubernetes manifests
+      shell: |
+        kubectl apply -f /home/ubuntu/k8s/
