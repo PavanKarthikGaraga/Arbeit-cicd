@@ -1,12 +1,27 @@
 - hosts: k8s
   become: yes
 
+  vars:
+    version_tag: "{{ lookup('env', 'VERSION_TAG') }}"
+
   tasks:
     - name: Copy k8s manifests
       copy:
         src: ../k8s/
         dest: /home/ubuntu/k8s/
         mode: 0644
+
+    - name: Update frontend image tag
+      replace:
+        path: /home/ubuntu/k8s/frontend-deployment.yaml
+        regexp: 'image: pavankarthik/arbeit-frontend:.*'
+        replace: "image: pavankarthik/arbeit-frontend:{{ version_tag }}"
+
+    - name: Update backend image tag
+      replace:
+        path: /home/ubuntu/k8s/backend-deployment.yaml
+        regexp: 'image: pavankarthik/arbeit-backend:.*'
+        replace: "image: pavankarthik/arbeit-backend:{{ version_tag }}"
 
     - name: Apply kubernetes manifests
       shell: kubectl apply -f /home/ubuntu/k8s/

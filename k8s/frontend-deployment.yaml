@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: arbeit-frontend
-          image: pavankarthik/arbeit-frontend:latest
+          image: pavankarthik/arbeit-frontend:temp
           ports:  
             - containerPort: 80
           envFrom:

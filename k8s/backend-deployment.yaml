@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: arbeit-backend
-          image: pavankarthik/arbeit-backend:latest
+          image: pavankarthik/arbeit-backend:temp
           ports:
             - containerPort: 9090
           envFrom:
