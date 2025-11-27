@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arbeit-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: arbeit-backend
+  template:
+    metadata:
+      labels:
+        app: arbeit-backend
+    spec:
+      containers:
+        - name: arbeit-backend
+          image: pavankarthik/arbeit-backend:latest
+          ports:
+            - containerPort: 9090
+          envFrom:
+            - configMapRef:
+                name: backend-config
