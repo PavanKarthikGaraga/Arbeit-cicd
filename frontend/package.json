@@ -26,7 +26,7 @@
     "mongodb": "^6.21.0",
     "next": "15.5.3",
     "nodemailer": "^6.10.1",
-    "pdfjs-dist": "^2.16.105",
+    "pdfjs-dist": "^4.2.67",
     "prisma": "^6.19.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
