@@ -2,8 +2,7 @@ FROM node:18-alpine AS builder
 
 WORKDIR /app
 
-# must exist in frontend/
-COPY .env .env
+
 
 COPY package*.json ./
 RUN npm install
