@@ -45,7 +45,7 @@
 }
 
 .step-indicator.active .step-number {
-  background: var(--primary);
+  background: hsl(var(--primary));
   color: white;
 }
 
@@ -116,7 +116,7 @@
   content: "•";
   position: absolute;
   left: 0;
-  color: var(--primary);
+  color: hsl(var(--primary));
 }
 
 /* Form Sections */
@@ -148,7 +148,7 @@ input, textarea {
 
 input:focus, textarea:focus {
   outline: none;
-  border-color: var(--primary);
+  border-color: hsl(var(--primary));
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
@@ -167,7 +167,7 @@ input:focus, textarea:focus {
 }
 
 .resume-upload:hover {
-  border-color: var(--primary);
+  border-color: hsl(var(--primary));
   background: rgba(59, 130, 246, 0.05);
 }
 
@@ -185,7 +185,7 @@ input:focus, textarea:focus {
 
 .resume-upload i {
   font-size: 2rem;
-  color: var(--primary);
+  color: hsl(var(--primary));
 }
 
 .resume-upload.has-file {
@@ -226,9 +226,9 @@ input:focus, textarea:focus {
 }
 
 .boolean-options button.active {
-  background: var(--primary);
+  background: hsl(var(--primary));
   color: white;
-  border-color: var(--primary);
+  border-color: hsl(var(--primary));
 }
 
 /* Review Section */
@@ -288,13 +288,13 @@ input:focus, textarea:focus {
 }
 
 .primary-button {
-  background: var(--primary);
+  background: hsl(var(--primary));
   border: none;
   color: white;
 }
 
 .primary-button:hover {
-  background: var(--primary);
+  background: hsl(var(--primary));
 }
 
 .submit-button {
@@ -317,7 +317,7 @@ input:focus, textarea:focus {
   width: 40px;
   height: 40px;
   border: 3px solid #f3f4f6;
-  border-top: 3px solid var(--primary);
+  border-top: 3px solid hsl(var(--primary));
   border-radius: 50%;
   animation: spin 1s linear infinite;
 }

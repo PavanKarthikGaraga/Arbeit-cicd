@@ -14,7 +14,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState('');
   const [countdown, setCountdown] = useState(0);
   const router = useRouter();
-  const { login, register, signInWithGoogle } = useAuth();
+  const { login, register } = useAuth();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -26,18 +26,7 @@ export default function AuthPage() {
     }
   }, [countdown]);
 
-  const handleGoogleSignIn = async () => {
-    setError('');
-    setLoading(true);
-    try {
-      await signInWithGoogle();
-      router.replace('/');
-    } catch (err) {
-      setError('Failed to sign in with Google');
-    } finally {
-      setLoading(false);
-    }
-  };
+
 
   const sendVerificationCode = async (email) => {
     try {
@@ -187,25 +176,6 @@ export default function AuthPage() {
                 {error}
               </div>
             )}
-
-            <button
-              className="google-auth-btn"
-              onClick={handleGoogleSignIn}
-              disabled={loading}
-            >
-              <Image
-                src="/google.svg"
-                alt="Google"
-                width={20}
-                height={20}
-                priority
-              />
-              Continue with Google
-            </button>
-
-            <div className="auth-divider">
-              <span>or</span>
-            </div>
 
             <div className="auth-tabs">
               <button

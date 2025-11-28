@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  --primary-color: var(--primary);
-  --primary-dark: var(--primary-foreground);
-  --secondary-color: var(--muted-foreground);
+  --primary-color: hsl(var(--primary));
+  --primary-foreground-color: hsl(var(--primary-foreground));
+  --primary-dark: hsl(var(--primary));
+  --secondary-color: hsl(var(--muted-foreground));
   --accent-color: #ffffff;
-  --text-color: var(--foreground);
-  --text-light: var(--muted-foreground);
-  --background: var(--background);
-  --background-alt: var(--muted);
-  --border-color: var(--border);
+  --text-color: hsl(var(--foreground));
+  --text-light: hsl(var(--muted-foreground));
+  --background: hsl(var(--background));
+  --background-alt: hsl(var(--muted));
+  --border-color: hsl(var(--border));
   --grey-100: #f3f4f6;
   --grey-200: #e5e7eb;
   --grey-300: #d1d5db;
@@ -374,10 +375,10 @@ body {
   font-size: 1rem;
   font-weight: 600;
   color: var(--primary-color);
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--muted);
   padding: 0.5rem 1rem;
   border-radius: 2rem;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid var(--border);
 }
 
 .step-emoji {
@@ -580,7 +581,7 @@ body {
 .primary-btn:hover {
   background: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .secondary-btn {
@@ -702,7 +703,7 @@ body {
 .orb-1 {
   width: 800px;
   height: 800px;
-  background: linear-gradient(45deg, var(--primary-color), rgba(59, 130, 246, 0.3));
+  background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--muted)));
   top: 50%;
   left: 0;
   transform: translateY(-50%);
@@ -712,7 +713,7 @@ body {
 .orb-2 {
   width: 600px;
   height: 600px;
-  background: linear-gradient(45deg, rgba(99, 102, 241, 0.4), rgba(59, 130, 246, 0.2));
+  background: linear-gradient(45deg, hsl(var(--muted)), hsl(var(--card)));
   bottom: -200px;
   right: -100px;
   animation: pulse 8s ease-in-out infinite reverse;
@@ -721,8 +722,8 @@ body {
 .grid-overlay {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(var(--grey-800) 1px, transparent 1px),
-                    linear-gradient(90deg, var(--grey-800) 1px, transparent 1px);
+  background-image: linear-gradient(var(--border) 1px, transparent 1px),
+                    linear-gradient(90deg, var(--border) 1px, transparent 1px);
   background-size: 50px 50px;
   opacity: 0.07;
 }
@@ -738,10 +739,7 @@ body {
 .logo-main {
   font-size: 4rem;
   font-weight: 800;
-  background: linear-gradient(45deg, var(--primary-color), #60a5fa);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--foreground);
   margin-bottom: 3rem;
   display: block;
 }
@@ -812,6 +810,7 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.1);
   padding: 2.5rem;
   animation: slideIn 0.5s ease forwards;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes slideIn {
@@ -850,18 +849,25 @@ body {
 .auth-tab {
   flex: 1;
   padding: 0.75rem;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
-  color: var(--text-light);
+  color: var(--muted-foreground);
   font-weight: 500;
   border-radius: 0.5rem;
   cursor: pointer;
   transition: all 0.2s;
 }
 
+.auth-tab:hover {
+  background: var(--muted);
+  color: var(--foreground);
+}
+
 .auth-tab.active {
   background: var(--primary-color);
-  color: white;
+  color: var(--primary-foreground-color);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .auth-form {
@@ -885,7 +891,7 @@ body {
 .form-group input {
   padding: 0.75rem 1rem;
   background: white;
-  border: 1px solid var(--border-color);
+  border: 1px solid #d4d4d8;
   border-radius: 0.5rem;
   color: var(--text-color);
   font-size: 1rem;
@@ -904,8 +910,8 @@ body {
 
 .auth-submit {
   background: var(--primary-color);
-  color: white;
-  border: none;
+  color: var(--primary-foreground-color);
+  border: 1px solid var(--zinc-300);
   padding: 0.875rem;
   border-radius: 0.5rem;
   font-weight: 600;

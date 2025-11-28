@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { MapPin, Briefcase, Building2, DollarSign } from 'lucide-react';
 import './apply.css';
+import './page.css';
 
 function ApplyForm() {
   const router = useRouter();
